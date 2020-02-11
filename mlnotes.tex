@@ -19,10 +19,10 @@
 
 \maketitle
 
-% TODO: Give hypothesis functions their own section. Should this have a greater focus on Kernels? Or should that be later on?
+% TODO: Give hypothesis functions their own section. This should go after the basics of SVM, Logistic Regression, and Polynomial/Linear regression are covered since the topics usually include items in these sections.
 
 % TODO: Give gradient descent its own section, probably going to reference
-% hypothesis functions
+% basic hypothesis functions
 
 \chapter{Linear Regression}
 
@@ -43,7 +43,7 @@ we predict a given house's worth?
 To start off, we examine the simpler case where only one of these inputs has any
 effect on the price. Table~\ref{table:house_price} sets up a correspondence
 between two variables of data, those being the lot area and sales price for a
-list of houses. Given these sets of data, we might wish to find a relation
+list of houses. Given these sets of data, we wish to find a relation
 between the two. That is, we would like some function that might \emph{predict}
 how much a house could sell for given it's lot area. 
 
@@ -88,14 +88,13 @@ how much a house could sell for given it's lot area.
 % TODO: Add more here
 The idea here is to create what is called an \emph{uni-variate linear
 regression}, which is a function that is meant to establish a relationship
-between a single \emph{explanatory} or \emph{independent} variable and a single
-\emph{scalar response} or \emph{dependent} variable.  
+between a single \emph{explanatory} variable and a single
+\emph{scalar response} variable.  
 
 
 Let $X$ be the \emph{feature vector}, which is the vector containing all
-explanatory variables. Note that $X^{(i)}$ is the $i$th \emph{feature} of $X$.
-Let $y$ be the vector of dependent variables with $y^{(i)}$ being the dependent
-variable corresponding to $X^{(i)}$. In establishing a linear regression, the
+explanatory variables, i.e. the lot areas. Note that $X^{(i)}$ is the $i$th \emph{feature} of $X$.
+Let $y$ be the vector of scalar responses with $y^{(i)}$ being the response corresponding to $X^{(i)}$. Using the data in Table~\ref{table:house_price}, we have: $(X^{(1)}, y^{(1)}) = (8450, \$208500)$, $(X^{(2)}, y^{(2)}) = (9600, \$181500)$, and so on. In establishing a linear regression, the
 goal is to create a function of the form $y=mx+b$, that is we wish to create a
 linear function that can almost accurately predict a result $y$ given a feature
 $x$. This function, called the \emph{hypothesis}, will be used to estimate the
