@@ -1,0 +1,39 @@
+\documentclass{book}[a5paper]
+\usepackage[a5paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{pgfplots, pgfplotstable}
+\usepackage{float}
+
+% Speed up the compile time for TIKZ
+%\usepgfplotslibrary{external}
+%\tikzexternalize
+
+\newcommand{\placeholder}{[Insert Section Here]}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem*{remark}{Remark}
+
+\title{Note From the Author}
+\author{Zachary Ross}
+\date{November 2019}
+
+\begin{document}
+
+\chapter{Note from the author}
+
+In writing this, the author has made it a goal to make every section as accessible to the broadest of audience as possible, while still retaining a poetic vocabulary. He subscribes to the belief that if you can't explain it to a child, then you don't understand the concept. He also believes that although Math is a language, it should not be a barrier that prevents the reader, who may or may not care about mathematics, from learning topics. It should only be used to establish  links between concepts where words can not describe or where math describes the topic more elegantly. Even when math is used, it should be clear what is being described and how it connects to previous concepts. He believes the readability standard held in computer science should apply to math as well.
+
+Take an arbitrary function with parameters $r(\theta, X)$. What does this function do? What does it conceptually stand for? The answer is: nothing out of context. Your eyes may have rolled even just looking at it. The function name should \emph{describe} what the function is doing. So if $r(\theta, X)$ is a \emph{hypothesis function} with weights $\theta$ and features $X$, then it would be much more intuitive to call this function $hypothesis(\theta, X)$. The same should follow for parameters and variable names. Instead of taking an arbitrary matrix as the feature matrix $X$, we should instead write out what is being referred to, in this case: $features$.
+
+After expanding, this gives us the completed definition for a hypothesis function:
+\begin{equation}
+    r(\theta, X) \rightarrow hypothesis(weights, features)
+\end{equation}
+Isn't that just magical?
+
+\end{document}

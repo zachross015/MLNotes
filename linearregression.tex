@@ -1,0 +1,39 @@
+\documentclass{book}[a5paper]
+\usepackage[a5paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{pgfplots, pgfplotstable}
+\usepackage{float}
+
+% Speed up the compile time for TIKZ
+%\usepgfplotslibrary{external}
+%\tikzexternalize
+
+\newcommand{\placeholder}{[Insert Section Here]}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem*{remark}{Remark}
+
+\title{Linear Regression}
+\author{Zachary Ross}
+\date{November 2019}
+
+\begin{document}
+
+\section{Real Value Prediction}
+
+For this section, our motivation is to construct an algorithm whose focus is predicting a value on the real number line. That is, we want a \emph{prediction function} which takes an input feature and produces some scalar reponse between $-\infty$ and $\infty$. As with the rest of machine learning and with life itself, we \emph{learn} using experiences, or features.
+
+% TODO: Include information on application
+
+\subsection{Linear Regression}
+
+We start off with a simple case, which is taking a singular input feature and using our prediction function to get a single response. 
+
+
+
+\end{document}
