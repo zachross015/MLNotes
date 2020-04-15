@@ -55,20 +55,19 @@ features.
 % TODO: Site sources:
 % - https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data
 
-The main focus of this section is determining a real, currently unknown number
+The main focus of this section is determining a real number
 that is associated with some other number. In a linear sense, we are finding
 a continuous function that takes in one number and spits out another using
 previously gathered data. So the question is, how do we form this function?
 
 
 \begin{figure}[t!]
-    \label{fig:hp}
     \begin{tikzpicture}
         \selectcolormodel{gray}
         \begin{axis}[
                 title = {HOUSE PRICES CORRELATED WITH PLOT AREA},  % whatever name you want
-                xlabel = {Plot Area (per 1,000$ft^2$)},
-                ylabel = {House Price (per \$100,000)},
+                xlabel = {Plot Area in 1,000$ft^2$},
+                ylabel = {House Price in \$100,000},
                 tick label style={/pgf/number format/fixed},
                 scaled y ticks = false,
                 scaled x ticks = false,
@@ -80,7 +79,7 @@ previously gathered data. So the question is, how do we form this function?
                 },
             ]
             \addplot[
-                only marks, 
+                only marks,
                 select coords between index={1}{50},
                 ] table[col sep=comma]{linreg_houseprice.csv};
         \end{axis}
@@ -88,30 +87,27 @@ previously gathered data. So the question is, how do we form this function?
     \caption{List of plot areas and selling prices for houses in Ames, Iowa.
     Looking at these kind of plots, we can try to find correlations in the data
     that help us predict what future houses may cost in that market.}
+    \label{fig:hp}
 \end{figure}
 
 Examine Figure \ref{fig:hp}, which shows a bit of housing data from
-Ames, Iowa. Notice that as the plot area increases, so does the price
-for that area. In other words, there is an apparent correlation between how
-much room someone has and how much their house costs.  Along with this, we can
-also notice that there is a \emph{base price}: an inital price that, in general,
-all the houses have associated to them aside from the correlation.
+Ames, Iowa. Looking at the data, there is a positive correlation when comparing each plot area with its corresponding price. This correlation shows us that a plot area has a relationship with the house price, which we can ascribe to a variable $\theta_1$. That is, $\theta_1$ is the price per square foot of plot area ($\frac{\text{price}}{ft^2}$). Additionally and less obviously, we can establish a \emph{base price} to this correlation. That is, we can instantiate some other variable, call it $\theta_0$, which acts as an offset for the housing prices. In context, this would mean that $\theta_0$ acts as a starting point for the housing prices. So for the graph in \ref{fig:hp}, we may see a base price of \$100,000 which tells us that most houses in the data set are above this base price.
 
 Examining these properties sets us up to form a hypothesis for how house prices
-are determined.  If we let $\theta$ be the associated prices such that
+are determined.  If we let $\theta$ be a vector of the associated prices such that
 $\theta_0$ is the base price and $\theta_1$ is the price per $ft^2$, and let $X$
 be the plot area in $ft^2$, the equation
 \begin{equation}
-    hypothesis(\theta, X) = \theta_1X + \theta_0
+    hypothesis(\theta, X) = \theta_0 + \theta_1X
 \end{equation}
 should ideally give us the price for that plot area. This is the standard slope
 equation $y=mx+b$, so this $hypothesis$ function will give us a straight line if
 we fix the values of the associated prices $\theta$ to constants. Then the goal
 for determining our hypothesis function is to \emph{find fixed values of
-$\theta$ that will give us the most accurate price for a plot area $X$}. 
+$\theta$ that will give us the most accurate price for a plot area $X$}.
 
-So the next question is: how is accuracy determined? For this, we make use of
-the previous data that has been collected. Let $y$ be the recorded house price
+So the next question is: how is accuracy determined? For this, we begin using
+the previously collected data. Let $y$ be the recorded house price
 associated with a plot area $X$. Then we measure the error of the hypothesis
 function by the distance between the value it predicts and the recorded value
 that was observed. That is
@@ -119,7 +115,7 @@ that was observed. That is
     error(\theta, X, y) = (hypothesis(\theta, X) - y)^2
 \end{equation}
 will give us the error, or distance, between our prediction and our actual
-results. 
+results.
 
 Now that we can determine the accuracy, we want to find the values of $\theta$
 that minimize this. Before we find the way to minimize this, let's make a couple
