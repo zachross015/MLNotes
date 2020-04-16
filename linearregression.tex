@@ -62,6 +62,7 @@ previously gathered data. So the question is, how do we form this function?
 
 
 \begin{figure}[t!]
+\centering
     \begin{tikzpicture}
         \selectcolormodel{gray}
         \begin{axis}[
@@ -118,5 +119,82 @@ The total error of the hypothesis will then be the total of all the errors betwe
 totalError(\theta, X, y) = \sum_{i=1}^m error(\theta, X^{(i)}, y^{(i)})
 \end{equation}
 will give us a good estimate for how well the weights $\theta$ are performing in the hypothesis.
+
+\begin{figure}[!htp]
+\centering
+\pgfplotsset{ticks=none}
+\begin{minipage}{.3\textwidth}
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}
+
+    \selectcolormodel{gray}
+    \begin{axis}[
+            tick label style={/pgf/number format/fixed},
+            scaled y ticks = false,
+            scaled x ticks = false,
+            yticklabel={
+                \fpeval{\tick / 100000}               % Divide the y coordinate/1000
+            },
+            xticklabel={
+                \fpeval{\tick / 1000}               % Divide the y coordinate/1000
+            },
+        ]
+        \addplot[
+            only marks,
+            select coords between index={1}{50},
+            ] table[col sep=comma]{linreg_houseprice.csv};
+    \end{axis}
+\end{tikzpicture}
+}
+\end{minipage}
+\begin{minipage}{.3\textwidth}
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}
+
+    \selectcolormodel{gray}
+    \begin{axis}[
+            tick label style={/pgf/number format/fixed},
+            scaled y ticks = false,
+            scaled x ticks = false,
+            yticklabel={
+                \fpeval{\tick / 100000}               % Divide the y coordinate/1000
+            },
+            xticklabel={
+                \fpeval{\tick / 1000}               % Divide the y coordinate/1000
+            },
+        ]
+        \addplot[
+            only marks,
+            select coords between index={1}{50},
+            ] table[col sep=comma]{linreg_houseprice.csv};
+    \end{axis}
+\end{tikzpicture}
+}
+\end{minipage}
+\begin{minipage}{.3\textwidth}
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}
+
+    \selectcolormodel{gray}
+    \begin{axis}[
+            tick label style={/pgf/number format/fixed},
+            scaled y ticks = false,
+            scaled x ticks = false,
+            yticklabel={
+                \fpeval{\tick / 100000}               % Divide the y coordinate/1000
+            },
+            xticklabel={
+                \fpeval{\tick / 1000}               % Divide the y coordinate/1000
+            },
+        ]
+        \addplot[
+            only marks,
+            select coords between index={1}{50},
+            ] table[col sep=comma]{linreg_houseprice.csv};
+    \end{axis}
+\end{tikzpicture}
+}
+\end{minipage}
+\end{figure}
 
 \end{document}
