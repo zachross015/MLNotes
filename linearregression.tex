@@ -66,7 +66,7 @@ previously gathered data. So the question is, how do we form this function?
         \selectcolormodel{gray}
         \begin{axis}[
                 title = {HOUSE PRICES CORRELATED WITH PLOT AREA},  % whatever name you want
-                xlabel = {Plot Area in 1,000$ft^2$},
+                xlabel = {Plot Area in 1,000 ft$^2$},
                 ylabel = {House Price in \$100,000},
                 tick label style={/pgf/number format/fixed},
                 scaled y ticks = false,
@@ -90,38 +90,33 @@ previously gathered data. So the question is, how do we form this function?
     \label{fig:hp}
 \end{figure}
 
-Examine Figure \ref{fig:hp}, which shows a bit of housing data from
-Ames, Iowa. Looking at the data, there is a positive correlation when comparing each plot area with its corresponding price. This correlation shows us that a plot area has a relationship with the house price, which we can ascribe to a variable $\theta_1$. That is, $\theta_1$ is the price per square foot of plot area ($\frac{\text{price}}{ft^2}$). Additionally and less obviously, we can establish a \emph{base price} to this correlation. That is, we can instantiate some other variable, call it $\theta_0$, which acts as an offset for the housing prices. In context, this would mean that $\theta_0$ acts as a starting point for the housing prices. So for the graph in \ref{fig:hp}, we may see a base price of \$100,000 which tells us that most houses in the data set are above this base price.
+The scatterplot in Figure \ref{fig:hp} shows a bit of housing data from
+Ames, Iowa. There is a positive correlation when comparing each plot area with its corresponding price, showing us that as plot area increases, so does the house price. We can ascribe this relationship to a variable $\theta_1$. That is, $\theta_1$ is the price per square foot of plot area ($\frac{\text{price}}{\text{ft}^2}$). Additionally, we can establish a \emph{base price} to this correlation. That is, we can instantiate some other variable, call it $\theta_0$, which acts as an offset for the housing prices. In context, this offset can be considered the starting price for houses in Ames, such that any plot will cost the base price of \$100,000 plus the price per square foot.
 
 Examining these properties sets us up to form a hypothesis for how house prices
-are determined.  If we let $\theta$ be a vector of the associated prices such that
-$\theta_0$ is the base price and $\theta_1$ is the price per $ft^2$, and let $X$
-be the plot area in $ft^2$, the equation
+are determined.  If we let $\theta = \begin{pmatrix}\theta_0 \\ \theta_1\end{pmatrix}$ be a vector of the associated prices
+with the base price as $\theta_0$ and price per ft$^2$ as $\theta_1$, and let $X^{(i)}$
+be the plot area for the $i$th feature in the training set $X$, the equation
 \begin{equation}
-    hypothesis(\theta, X) = \theta_0 + \theta_1X
+    hypothesis(\theta, X^{(i)}) = \theta_0 + \theta_1X^{(i)}
 \end{equation}
-should ideally give us the price for that plot area. This is the standard slope
-equation $y=mx+b$, so this $hypothesis$ function will give us a straight line if
-we fix the values of the associated prices $\theta$ to constants. Then the goal
-for determining our hypothesis function is to \emph{find fixed values of
-$\theta$ that will give us the most accurate price for a plot area $X$}.
+should ideally give us the price for $X^{(i)}$. The key word in the last sentence is \emph{ideally} since the hypothesis function will only give us 100\% accuracy when all the data in the data set lies exactly on the line formed by the hypothesis. This would mean that each square foot of plot area would cost the exact same amount at every house you check. However optimal this is, it is generally not the case. Instead, we look to maximize the accuracy of this function or otherwise minimize the \emph{error}. We do this by altering the prices in $\theta$.
 
-So the next question is: how is accuracy determined? For this, we begin using
-the previously collected data. Let $y$ be the recorded house price
-associated with a plot area $X$. Then we measure the error of the hypothesis
-function by the distance between the value it predicts and the recorded value
-that was observed. That is
+We begin measuring the error of our hypothesis by comparing it with
+the previously collected data.  An intuitive way for measuring the  error of the hypothesis would be by measuring the shortest distance between the value it predicts and the recorded value since this, in a literal sense, tells us how far off our prediction was from the result. Let $y^{(i)}$ be the recorded house price
+associated with a plot area $X^{(i)}$. This shortest distance would be the euclidean distance between the two, measured by:
 \begin{equation}
-    error(\theta, X, y) = (hypothesis(\theta, X) - y)^2
+    error(\theta, X^{(i)}, y^{(i)}) = (hypothesis(\theta, X^{(i)}) - y^{(i)})^2
 \end{equation}
-will give us the error, or distance, between our prediction and our actual
+The will give us the error, or distance, between our prediction and our actual
 results.
 
-Now that we can determine the accuracy, we want to find the values of $\theta$
-that minimize this. Before we find the way to minimize this, let's make a couple
-of observations first.
+% TODO: Add graphs showing intuitive definition of error
 
+The total error of the hypothesis will then be the total of all the errors between the training set predictions and the actual training set results. Let $m$ be the number of features in the training set $X$. Then
+\begin{equation}
+totalError(\theta, X, y) = \sum_{i=1}^m error(\theta, X^{(i)}, y^{(i)})
+\end{equation}
+will give us a good estimate for how well the weights $\theta$ are performing in the hypothesis.
 
-This happens when, for every feature $X^{(i)}$ in the data
-set, $error(\theta, X^{(i)}, y)$ is as close to 0 as possible.
 \end{document}
