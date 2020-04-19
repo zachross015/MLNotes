@@ -154,16 +154,15 @@ off our prediction was from the result.
 \end{wrapfigure}
 
 We see how this is found in Figure \ref{fg:err} by first examining the case for
-a single feature. The hypothesis function predicts a result for $X^{(i)}$, which
-corresponds to some base price plus the cost of the lot area in our example from
-earlier. We then compare this to the original result at $y^{(i)}$ by finding the
-distance between these two points, which is precisely the norm of these two
-points. The distance we are trying to find is the length of the line marked by
-(a). Since these two points have the same $x$ coordinate, those coordinates will
-cancel out and so it suffices to find the distance between their $y$
-coordinates. We know the distance between any two points to be $\| point_1 -
-point_2 \|$ or equivalently $(point_1 - point_2)^2$.  Putting this all together,
-we define the square error function to be
+a single feature. The hypothesis function predicts a result for $X^{(i)}$. We
+then compare this to the original result $y^{(i)}$ by finding the distance
+between these two points, also known as the \emph{residual} or the \emph{error}
+and is the length of the line marked by (a). The distance between any two points
+is the squared norm between these points $\| point_1 - point_2 \|^2$ or
+equivalently $(point_{1x}-point_{2x})^2 + (point_{1y}-point_{2y})^2$. When we
+substitute $hypothesis$ and $y$ in, both have the same values for $x$, so this
+reduces down to the distance between the two $y$ values. Putting this all
+together, we get the error equation 
 \begin{equation}
     error(\theta, X^{(i)}, y^{(i)}) = (hypothesis(\theta, X^{(i)}) - y^{(i)})^2
 \end{equation}
