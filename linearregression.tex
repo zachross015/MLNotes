@@ -3,10 +3,14 @@
 % TODO: Cite sources:
 % - https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data
 
-The main focus of this section is determining a real number
-that is associated with some other number. In a linear sense, we are finding
-a continuous function that takes in one number and spits out another using
-previously gathered data. So the question is, how do we form this function?
+
+% TODO: Explain this better. It sounds robotic and unintuitive. This shit needs
+% to be a STORY
+The main focus of this section is predicting a real number when given a set of
+other numbers, or using pre-recorded inputs and outputs to generate new outputs
+for any input we may need. In a linear sense, we are finding a continuous
+function that takes in one number and spits out another using previously
+gathered data. So the question is, how do we form this function?
 
 
 \begin{figure}[t!]
@@ -39,19 +43,42 @@ previously gathered data. So the question is, how do we form this function?
     \label{fig:hp}
 \end{figure}
 
-Le us look at the scatterplot in Figure \ref{fig:hp}, which shows a bit of housing data from Ames,
-Iowa. When observing it, our goal is to create a model that will take a plot area and give us a house price that best fits the examples recorded. So we start by asking, what kind of representation of data best aligns with what we are asking? How can we find patterns in this data to predict what price might be associated to a specified plot area? How can we do this autonomously?
+Let's look at the scatterplot in Figure \ref{fig:hp}, which shows a bit of
+housing data from Ames, Iowa. When observing it, our goal is to create a model
+that will take a plot area and give us a house price that best fits the examples
+recorded. So we start by asking, what kind of representation of data best aligns
+with what we are asking? How can we find patterns in this data to predict what
+price might be associated to a specified plot area? How can we do this
+autonomously?
 
- First, we can identify that there is a positive correlation when comparing each plot area with its
-corresponding price, showing us that as plot area increases, so does the house
-price. There are some outliers for this case, but generally this trend is consistent. Additionally, we can take note that there is some base price for every house in the area. We can observe this with the fact that we don't see any houses that cost a negative amount. That would just be ridiculous and would cause an economic downturn. More intuitively, we can observe this by the fact that the goal of selling a house is to make money, so assuming the smallest house you could buy is around 1,000 ft$^2$, we would never see such a house costing \$0. As such, we should be able to draw a straight line through the data from some offset such that we get fairly close to all of the recorded examples.
+First, we can identify that there is a positive correlation when comparing each
+plot area with its corresponding price, showing us that as plot area increases,
+so does the house price. There are some outliers for this case, but generally
+this trend is consistent. Additionally, we can take note that there is some
+base price for every house in the area. We can observe this with the fact that
+we don't see any houses that cost a negative amount. That would just be
+ridiculous and would cause an economic downturn. More intuitively, we can
+observe this by the fact that the goal of selling a house is to make money, so
+assuming the smallest house you could buy is around 1,000 ft$^2$, we would
+never see such a house costing \$0. As such, we should be able to draw a
+straight line through the data from some offset such that we get fairly close
+to all of the recorded examples.
 
-This relationship is the basis for any linear function of the form $y=ax + b$ with the slope coefficient $a$ describing the correlation between housing price/plot area and the offset $b$ describing the overall starting price for houses in Ames. We prescribe these coefficients to the vector of prices $\theta = \begin{pmatrix}\theta_0 \\ \theta_1\end{pmatrix}$ such that the base price is $b = \theta_0$ and the price per ft$^2$ of plot area is $a=\theta_1$. This coefficient vector is known as the \emph{weight vector} since we adjust the values in $\theta$ until we find coefficients that best fit the data. In
-context, this linear function will predict the ideal price of any house in Ames after learning from the experiences we feed it.
+This relationship is the basis for any linear function of the form $y=ax + b$
+with the slope coefficient $a$ describing the correlation between housing
+price/plot area and the offset $b$ describing the overall starting price for
+houses in Ames. We prescribe these coefficients to the vector of prices $\theta
+= \begin{pmatrix}\theta_0 \\ \theta_1\end{pmatrix}$ such that the base price is
+$b = \theta_0$ and the price per ft$^2$ of plot area is $a=\theta_1$. This
+coefficient vector is known as the \emph{weight vector} since we adjust the
+values in $\theta$ until we find coefficients that best fit the data. In
+context, this linear function will predict the ideal price of any house in
+Ames after learning from the experiences we feed it.
 
 Examining these properties sets us up to form a hypothesis for how house prices
-are determined. Let $X$ be the training set, i.e. the set containing all of the recorded plot areas. Let $X^{(i)}$ be the plot
-area for the $i$th feature in $X$. From what we've discussed, the equation
+are determined. Let $X$ be the training set, i.e. the set containing all of the
+recorded plot areas. Let $X^{(i)}$ be the plot area for the $i$th feature in
+$X$. From what we've discussed, the equation
 \begin{equation}
     hypothesis_{\theta}(X^{(i)}) = \theta_0 + \theta_1X^{(i)}
 \end{equation}
@@ -61,14 +88,16 @@ accuracy when all the data in the data set lies exactly on the line formed by
 the hypothesis. This would mean that each square foot of plot area would cost
 the exact same amount at every house you check. However optimal this is, it is
 generally not the case. Instead, we look to maximize the accuracy of this
-function or otherwise minimize the \emph{error}.
+function or otherwise minimize the \emph{loss}.
 
 
 We begin measuring the error of our hypothesis by comparing it with the
 previously collected data.  An intuitive way for measuring the  error of the
 hypothesis would be by measuring the shortest distance between the value it
 predicts and the recorded value since this, in a literal sense, tells us how far
-off our prediction was from the result.
+off our prediction was from the result. This, along with other measurements,
+is discussed more in \placeholder. However, we will still derive the process for
+finding this distance here until that section is written.
 
 \begin{wrapfigure}{O}{0.5\textwidth}
     \centering
@@ -88,40 +117,52 @@ off our prediction was from the result.
     \label{fg:err}
 \end{wrapfigure}
 
-We see how this is found in Figure \ref{fg:err} by examining the case for
-a single feature. First, the hypothesis function predicts a result for $X^{(i)}$. We
-then compare this to the original result $y^{(i)}$ by finding the distance
+We see how this is found in Figure \ref{fg:err} by examining the case for a
+single feature. First, the hypothesis function predicts a result for $X^{(i)}$.
+We then compare this to the original result $y^{(i)}$ by finding the distance
 between these two points, also known as the \emph{residual} or the \emph{error}
-and is the length of the line marked by (a). We can find this distance in two ways, those being the \emph{squared distance} and the \emph{absolute distance}, both of which result in a positive value.
-We prefer the squared distance in this scenario because the algebra comes out much neater than that of the absolute distance, most notably in the calculations later on in this section, however both have their pros and cons when determining residual error. This will be further discussed in \placeholder.
+and is measured by the length of the line marked by (a). We can find this
+distance in two ways, those being the \emph{squared distance} and the
+\emph{absolute distance}, both of which result in a positive value. We prefer
+the squared distance in this scenario because the algebra comes out much neater
+than that of the absolute distance, most notably in the calculations later on in
+this section, however both have their pros and cons when determining residual
+error. This will be further discussed in \placeholder.
 
-The squared distance between any two points
-is the squared norm $\| point_1 - point_2 \|^2$ or
-equivalently $(point_{1x}-point_{2x})^2 + (point_{1y}-point_{2y})^2$. When we
-substitute in the points $(X^{(i)}, hypothesis_{\theta}(X^{(i)}))$ and $(X^{(i)}, y^{(i)})$, the $x$ values cancel out, reducing this down to the distance between the two $y$ values. Putting this all
-together, we get the error equation
+The squared distance between any two points is the squared norm $\| point_1 -
+point_2 \|^2$ or equivalently $(point_{1x}-point_{2x})^2 +
+(point_{1y}-point_{2y})^2$. When we substitute in the points $(X^{(i)},
+hypothesis_{\theta}(X^{(i)}))$ and $(X^{(i)}, y^{(i)})$, the $x$ values cancel
+out, reducing this down to the distance between the two $y$ values. Putting this
+all together, we define our loss function as:
 \begin{equation}
-    error_{\theta}(X^{(i)}, y^{(i)}) = (hypothesis_{\theta}(X^{(i)}) - y^{(i)})^2
+    loss_{\theta}(X^{(i)}, y^{(i)}) = (hypothesis_{\theta}(X^{(i)}) - y^{(i)})^2
 \end{equation}
 
-Now that we have a method for calculating the amount of error a single feature has with weights $\theta$, we need a method for determining the overall error of our weights. That is, we need some function, called the \emph{cost function}, that quantifies the uncertainty of $\theta$. An effective method for achieving this is by taking the average error as an estimate for the cost of the weights. 
-
-% This needs a better build up
-We then need a way to measure the total error generated by the hypothesis
-function across all of the features. This total error generated is called the
-\emph{cost} of our hypothesis function. For this, a good estimate of our cost is
-the \emph{mean squared error (MSE)} which is described in more detail in Section
-[Insert Loss Function section here]. So if we let $m$ be the number of features
-in $X$, the cost function
+Now that we have a method for calculating the amount of loss a single feature
+has with weights $\theta$, we need a method for determining the overall loss of
+our weights. That is, we need some function, called the \emph{cost function},
+that quantifies the uncertainty of $\theta$. There are several such methods for
+quantifiying this uncertainty, however those are discussed further in Section
+\placeholder. For now, an effective method for achieving this is by averaging
+the loss over the entire training set. This method is known as the \emph{mean
+squared error (MSE)}. So if we let $m$ be the number of features in $X$, the
+cost function
 \begin{subequations}
     \begin{align}
-        cost(\theta) = \frac{1}{m}\sum_{i=1}^m error_{\theta}(X^{(i)}, y^{(i)}) \\
-    \intertext{will give us a good estimate for how well $\theta$ is performing in the hypothesis. Expanded out, this is equivelent to}
+        cost(\theta) = \frac{1}{m}\sum_{i=1}^m loss_{\theta}(X^{(i)}, y^{(i)}) \\
+    \intertext{will give us a good estimate for how well $\theta$ is performing
+        in the hypothesis. Expanded out, this is equivelent to}
         cost(\theta) = \frac{1}{m}\sum_{i=1}^m (\theta_0 + \theta_1X^{(i)} -
         y^{(i)})^2
     \end{align}
 \end{subequations}
 .
+
+Since we have this function that measures the overall loss, the next step
+would be finding values of $\theta$ that minimize this value. This would mean
+finding a base price and price per ft$^2$ that matches the data enough such that
+the hypothesized price would be reasonably close to the recorded price.
 
 \begin{figure}[htp!]
     \centering
