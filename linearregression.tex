@@ -167,24 +167,24 @@ the hypothesized price would be reasonably close to the recorded price.
 \begin{figure}[htp!]
     \centering
     \pgfplotsset{ticks=none}
-    \begin{minipage}{.3\textwidth}
+    \begin{minipage}{.45\textwidth}
         \centering
         \resizebox{\textwidth}{!}{
             \begin{tikzpicture}
 
                 \selectcolormodel{gray}
                 \begin{axis}[
+                xlabel=Base House Price ($\theta_0$),
+                ylabel=$cost(\theta)$,
+                domain=0.796:2.796
                     ]
-                    \addplot[
-                        only marks,
-                        select coords between index={1}{50},
-                    ] table[col sep=comma]{linreg_houseprice.csv};
+                    \addplot+[no marks] {x^2 - 3.59172*x + 3.7317812227};
+
                 \end{axis}
             \end{tikzpicture}
         }
-        (a)
     \end{minipage}
-    \begin{minipage}{.3\textwidth}
+    \begin{minipage}{.45\textwidth}
         \centering
         \resizebox{\textwidth}{!}{
             \begin{tikzpicture}
@@ -199,24 +199,6 @@ the hypothesized price would be reasonably close to the recorded price.
                 \end{axis}
             \end{tikzpicture}
         }
-        (b)
-    \end{minipage}
-    \begin{minipage}{.3\textwidth}
-        \centering
-        \resizebox{\textwidth}{!}{
-            \begin{tikzpicture}
-
-                \selectcolormodel{gray}
-                \begin{axis}[
-                    ]
-                    \addplot[
-                        only marks,
-                        select coords between index={1}{50},
-                    ] table[col sep=comma]{linreg_houseprice.csv};
-                \end{axis}
-            \end{tikzpicture}
-        }
-        (c)
     \end{minipage}
     \caption{}
     \label{fg:weights1}
