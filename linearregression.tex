@@ -162,7 +162,15 @@ cost function
 Since we have this function that measures the overall loss, the next step
 would be finding values of $\theta$ that minimize this value. This would mean
 finding a base price and price per ft$^2$ that matches the data enough such that
-the hypothesized price would be reasonably close to the recorded price.
+the hypothesized price would be reasonably close to the recorded price. What we're essentially looking for are \emph{the coordinates of a point in the cost function's domain that correspond to the lowest lowest possible value for the cost}. To do this, let's consider the shape of the cost function.
+
+The loss function expands out to be a second degree polynomial in two dimensions, and we can identify each of the leading terms to be $\theta_0^2$ and $\theta_1^2$. This is unaffected by the summation in the cost function, so it has the same form. We visualize what this would look like in figure \ref{fg:cost}. From there, we can see the inputs $\theta$ and ouptuts of $cost(\theta)$ form a \emph{parabolic ellipsoid}. 
+
+The coordinates we are looking for are then the point at the bottom of this graph. We can obtain this point by noting the graph has an \emph{inflection point} at the point $P = \begin{pmatrix}x \\ y\end{pmatrix}$ where if we were to take points $P_1 = \begin{pmatrix}x_1 \\ y_1\end{pmatrix}$, $P_2 = \begin{pmatrix}x_2 \\ y_2\end{pmatrix}$, $ P_3 = \begin{pmatrix}x_3 \\ y_3\end{pmatrix}$, and $P_4 = \begin{pmatrix}x_4 \\ y_4\end{pmatrix}$ with $P_1 < P_2 < P < P_3 < P_4$ then $cost(P_2) - cost(P_1)$ would be negative while $cost(P_4) - cost(P_3)$ would be positive. More simply, this is the point where we go from decreasing changes in cost to increasing changes, and at this exact point we expect to see a change of 0 since we have to switch. This is by definition when the gradient of the cost function is 0:
+\begin{equation}
+	 \nabla cost(\theta) = 0	
+\end{equation}
+    
 
 \begin{figure}[htp!]
     \centering
