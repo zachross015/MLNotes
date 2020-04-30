@@ -166,50 +166,42 @@ the hypothesized price would be reasonably close to the recorded price. What we'
 
 The loss function expands out to be a second degree polynomial in two dimensions, and we can identify each of the leading terms to be $\theta_0^2$ and $\theta_1^2$. This is unaffected by the summation in the cost function, so it has the same form. We visualize what this would look like in figure \ref{fg:cost}. From there, we can see the inputs $\theta$ and ouptuts of $cost(\theta)$ form an \emph{elliptical paraboloid}.
 
-The coordinates we are looking for are then the point at the bottom of this graph. We can obtain this point by noting the graph has an \emph{inflection point} at the point $P = (x, y)$ where if we were to take points $P_1$, $P_2$, $P_3$, and $P_4$ with $P_1 < P_2 < P < P_3 < P_4$ then $cost(P_2) - cost(P_1)$ would be negative while $cost(P_4) - cost(P_3)$ would be positive. More simply, this is the point where we go from decreasing to increasing changes in cost, and at this exact point we expect to see a change of 0 since we have to switch from one to the other. This is by definition when the gradient of the cost function is 0:
-\begin{equation}
-	 \nabla cost(\theta) = \vec{0}
-\end{equation}
+The coordinates we are looking for are then the point at the bottom of this paraboloid since this is the minimum value of the cost. We can obtain this point by noting the graph has an \emph{inflection point} at the point $P = (\theta_x, \theta_y)$ where if we were to take points $P_1$, $P_2$, $P_3$, and $P_4$ with $P_1 < P_2 < P < P_3 < P_4$ then $cost(P_2) - cost(P_1)$ would be negative while $cost(P_4) - cost(P_3)$ would be positive. More simply, this is the point where we go from decreasing to increasing changes in cost, and at this exact point we expect to see a change of 0 since we have to switch from one to the other. This is by definition when the gradient of the cost function is 0: $\nabla cost(\theta) = \vec{0}$.
 
 
 \begin{figure}[t!]
     \centering
-    \pgfplotsset{ticks=none}
-    \begin{minipage}{.45\textwidth}
-        \centering
-        \resizebox{\textwidth}{!}{
-            \begin{tikzpicture}
-
-                \selectcolormodel{gray}
-                \begin{axis}[
-                xlabel=Base House Price ($\theta_0$),
-                ylabel=$cost(\theta)$,
-                domain=0.796:2.796
-                    ]
-                    \addplot+[no marks] {x^2 - 3.59172*x + 3.7317812227};
-
-                \end{axis}
-            \end{tikzpicture}
+    \begin{tikzpicture}[
+        declare function = {
+            Z(\x, \y) = ((\x-8)^2 + (\y-8)^2)/8;
         }
-    \end{minipage}
-    \begin{minipage}{.45\textwidth}
-        \centering
-        \resizebox{\textwidth}{!}{
-            \begin{tikzpicture}
-
-                \selectcolormodel{gray}
-                \begin{axis}[
-                    ]
-                    \addplot[
-                        only marks,
-                        select coords between index={1}{50},
-                    ] table[col sep=comma]{linreg_houseprice.csv};
-                \end{axis}
-            \end{tikzpicture}
-        }
-    \end{minipage}
+    ]
+        \begin{axis}[
+            view = {135}{30},
+            colormap/blackwhite,
+            axis equal,
+            axis lines = center,
+            axis on top,
+            ticks = none,
+            set layers = default
+            xmin = 0, ymin = 0, zmin = 0,
+            xlabel=$\theta_0$, ylabel={$\theta_1$}, zlabel={$cost(\theta)$},
+            xlabel style={anchor=south east},
+            ylabel style={anchor=south west},
+            zlabel style={anchor=south west},
+            enlargelimits,
+            tick align=inside,
+            domain=0:16,
+            y domain = 0:16,
+            samples=30,
+            z buffer=sort,
+            minor tick=1,
+            ]
+            \addplot3 [surf] {Z(x, y)};
+        \end{axis}
+    \end{tikzpicture}
     \caption{}
-    \label{fg:weights1}
+    \label{fg:cost}
 \end{figure}
 
 % TODO: In Regularization/normalization, explain why inputs generally need to be scaled. This function with its weights already looks like
