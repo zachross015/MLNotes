@@ -130,8 +130,8 @@ this section, however both have their pros and cons when determining residual
 error. This will be further discussed in \placeholder.
 
 The squared distance between any two points is the squared norm $\| point_1 -
-point_2 \|^2$ or equivalently $(point_{1x}-point_{2x})^2 +
-(point_{1y}-point_{2y})^2$. When we substitute in the points $(X^{(i)},
+point_2 \|^2$ or equivalently $(point_{1x}-point_{2x})^2$ $+$
+$(point_{1y}-point_{2y})^2$. When we substitute in the points $(X^{(i)},
 hypothesis_{\theta}(X^{(i)}))$ and $(X^{(i)}, y^{(i)})$, the $x$ values cancel
 out, reducing this down to the distance between the two $y$ values. Putting this
 all together, we define our loss function as:
@@ -242,11 +242,18 @@ to find solutions for the linear system
 \end{equation*}
 . This solution is of the form $A\theta = B$, and so we could find these weights
 by computing $\theta =A^{-1}B$. This has a lower computational bound of
-$O(n^{2.375})$ where $n$ is the number of weights in $\theta$, as discovered by
-Virginia Williams [Source]. 
+$O(n^{2.375})$ when using a variant of \emph{Strassen's algorithm} discovered by
+Virginia Williams [Source]. $n$ in this case is the number of weights in
+$\theta$. However, the algorithm tends to only be advantageous to the naive
+version of matrix multiplication when a specific RAM model (PRAM, for more see
+[source]) is used and when $n \geq 1,000$. Otherwise, the traditional form of
+matrix multiplication is nearly as effective. This puts us at a lower bound of
+$O(n^3)$, which is highly inefficient when dealing with models of any caliber.
 
-Instead, we perform a gradient descent until we
-converge.
+Because finding exact solutions is infeasible, we instead seek to approximate
+these values as closely as we can.
+
+%TODO: Introduce gradient descent
 
 
 % TODO: In Regularization/normalization, explain why inputs generally need to be scaled. This function with its weights already looks like
