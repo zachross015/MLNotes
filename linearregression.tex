@@ -244,17 +244,27 @@ to find solutions for the linear system
 by computing $\theta =A^{-1}B$. This has a lower computational bound of
 $O(n^{2.375})$ when using a variant of \emph{Strassen's algorithm} discovered by
 Virginia Williams [Source]. $n$ in this case is the number of weights in
-$\theta$. However, the algorithm tends to only be advantageous to the naive
+$\theta$. However, the algorithm tends to only be advantageous over the naive
 version of matrix multiplication when a specific RAM model (PRAM, for more see
 [source]) is used and when $n \geq 1,000$. Otherwise, the traditional form of
 matrix multiplication is nearly as effective. This puts us at a lower bound of
 $O(n^3)$, which is highly inefficient when dealing with models of any caliber.
 
 Because finding exact solutions is infeasible, we instead seek to approximate
-these values as closely as we can.
-
-%TODO: Introduce gradient descent
-
+these values as closely as we can. So how do we go from having unknown values of
+$\theta$ to precise values that approximate the dataset? The general idea is
+that we want to pick a point in the domain and make incremental changes to this
+point that follow the gradient until we reach the global minimum. We have to start
+somewhere, and considering the parabolic shape of fg \ref{fg:cost} contains a
+global minimum, any point in the domain will be a viable option. A good place to
+generally start at will be at the origin (0,0). To reach this minimum, we then
+want to take gradual steps towards the minimum by descending the gradient. We
+do this by moving $\theta$ by the changes  we get in the cost
+function's gradient at each increment of step. If we take the step as $\alpha$,
+this comes out as
+\begin{equation}
+    \theta \leftarrow \theta - \alpha \nabla cost(\theta)
+\end{equation}
 
 % TODO: In Regularization/normalization, explain why inputs generally need to be scaled. This function with its weights already looks like
 % \theta_0^2 + \num{1e8}\theta_1^2 + \num{2e4}\theta_0\theta_1 - \num{4e5}\theta_0 - \num{4e9}\theta_1 + \num{4e10}
