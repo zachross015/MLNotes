@@ -130,8 +130,8 @@ this section, however both have their pros and cons when determining residual
 error. This will be further discussed in \placeholder.
 
 The squared distance between any two points is the squared norm $\| point_1 -
-point_2 \|^2$ or equivalently $(point_{1x}-point_{2x})^2 +
-(point_{1y}-point_{2y})^2$. When we substitute in the points $(X^{(i)},
+point_2 \|^2$ or equivalently $(point_{1x}-point_{2x})^2$ $+$
+$(point_{1y}-point_{2y})^2$. When we substitute in the points $(X^{(i)},
 hypothesis_{\theta}(X^{(i)}))$ and $(X^{(i)}, y^{(i)})$, the $x$ values cancel
 out, reducing this down to the distance between the two $y$ values. Putting this
 all together, we define our loss function as:
@@ -159,15 +159,13 @@ cost function
 \end{subequations}
 .
 
-Since we have this function that measures the overall loss, the next step
-would be finding values of $\theta$ that minimize this value. This would mean
-finding a base price and price per ft$^2$ that matches the data enough such that
-the hypothesized price would be reasonably close to the recorded price. What we're essentially looking for are \emph{the coordinates of a point in the cost function's domain that correspond to the lowest lowest possible value for the cost}. To do this, let's consider the shape of the cost function.
-
-The loss function expands out to be a second degree polynomial in two dimensions, and we can identify each of the leading terms to be $\theta_0^2$ and $\theta_1^2$. This is unaffected by the summation in the cost function, so it has the same form. We visualize what this would look like in figure \ref{fg:cost}. From there, we can see the inputs $\theta$ and ouptuts of $cost(\theta)$ form an \emph{elliptical paraboloid}.
-
-The coordinates we are looking for are then the point at the bottom of this paraboloid since this is the minimum value of the cost. We can obtain this point by noting the graph has an \emph{inflection point} at the point $P = (\theta_x, \theta_y)$ where if we were to take points $P_1$, $P_2$, $P_3$, and $P_4$ with $P_1 < P_2 < P < P_3 < P_4$ then $cost(P_2) - cost(P_1)$ would be negative while $cost(P_4) - cost(P_3)$ would be positive. More simply, this is the point where we go from decreasing to increasing changes in cost, and at this exact point we expect to see a change of 0 since we have to switch from one to the other. This is by definition when the gradient of the cost function is 0: $\nabla cost(\theta) = \vec{0}$.
-
+Since we have this function that measures the overall loss, the next step would
+be finding values of $\theta$ that minimize this value. This would mean finding
+a base price and price per ft$^2$ that matches the data enough such that the
+hypothesized price would be reasonably close to the recorded price. What we're
+essentially looking for are \emph{the coordinates of a point in the cost
+function's domain that correspond to the lowest lowest possible value for the
+cost}. To do this, let's consider the shape of the cost function.
 
 \begin{figure}[t!]
     \centering
@@ -203,6 +201,70 @@ The coordinates we are looking for are then the point at the bottom of this para
     \caption{}
     \label{fg:cost}
 \end{figure}
+
+The loss function expands out to be a second degree polynomial in two
+dimensions, and we can identify each of the leading terms to be $\theta_0^2$ and
+$\theta_1^2$. This is unaffected by the summation in the cost function, so it
+has the same form. We visualize what this would look like in figure
+\ref{fg:cost}. From there, we can see the inputs $\theta$ and ouptuts of
+$cost(\theta)$ form an \emph{elliptical paraboloid}.
+
+The coordinates we are looking for are then the exact point where this
+paraboloid bottoms out since this will give us the minimum cost. We can obtain
+this point by noting the graph has an \emph{inflection point} at the point $P =
+(\theta_x, \theta_y)$ where we go from descending the paraboloid's curve to
+ascending it. That is, if we were to take points $P_1$, $P_2$, $P_3$, and $P_4$
+with $P_1 < P_2 < P < P_3 < P_4$ then $cost(P_2) - cost(P_1)$ would be negative
+while $cost(P_4) - cost(P_3)$ would be positive. As we approach $P$ from either
+side of the inflection, we expect to see the net change being 
+reduced to infinitely small amounts. This makes sense since at
+$P$ we are neither descending or ascending and as we move closer to it we see
+the amount change reflecting this. This is by definition when the gradient of
+the cost function is 0: $\nabla cost(\theta) = \vec{0}$.
+
+% TODO: Site source https://stanford.edu/~rezab/classes/cme323/S16/notes/Lecture03/cme323_lec3.pdf
+Solving for this gradient is, however, computationally infeasible. As we will
+see later on, the growth of this type of function is much too large for many
+modern computers to handle efficiently, especially as we begin adding more
+components to our features. Even for this simple example, we end up attempting
+to find solutions for the linear system
+\begin{equation*}
+    \begin{pmatrix}
+        m & \sum_{i=1}^{m}X^{(i)} \\[6pt] 
+        \sum_{i=1}^{m}X^{(i)} & \sum_{i=1}^{m}X^{(i)2}
+    \end{pmatrix}
+    \theta
+    =
+    \begin{pmatrix}
+        -\sum_{i=1}^{m}y^{(i)} \\[6pt]
+        -\sum_{i=1}^{m}X^{(i)}y^{(i)} \\
+    \end{pmatrix}
+\end{equation*}
+. This solution is of the form $A\theta = B$, and so we could find these weights
+by computing $\theta =A^{-1}B$. This has a lower computational bound of
+$O(n^{2.375})$ when using a variant of \emph{Strassen's algorithm} discovered by
+Virginia Williams [Source]. $n$ in this case is the number of weights in
+$\theta$. However, the algorithm tends to only be advantageous over the naive
+version of matrix multiplication when a specific RAM model (PRAM, for more see
+[source]) is used and when $n \geq 1,000$. Otherwise, the traditional form of
+matrix multiplication is nearly as effective. This puts us at a lower bound of
+$O(n^3)$, which is highly inefficient when dealing with models of any caliber.
+
+Because finding exact solutions is infeasible, we instead seek to approximate
+these values as closely as we can. So how do we go from having unknown values of
+$\theta$ to precise values that approximate the dataset? The general idea is
+that we want to pick a point in the domain and make incremental changes to this
+point that follow the gradient until we reach the global minimum. We have to start
+somewhere, and considering the parabolic shape of fg \ref{fg:cost} contains a
+global minimum, any point in the domain will be a viable option. A good place to
+generally start at will be at the origin (0,0). To reach this minimum, we then
+want to take gradual steps towards the minimum by descending the gradient. We
+do this by moving $\theta$ by the changes  we get in the cost
+function's gradient at each increment of step. If we take the step as $\alpha$,
+this comes out as
+\begin{equation}
+    \theta \leftarrow \theta - \alpha \nabla cost(\theta)
+\end{equation}
 
 % TODO: In Regularization/normalization, explain why inputs generally need to be scaled. This function with its weights already looks like
 % \theta_0^2 + \num{1e8}\theta_1^2 + \num{2e4}\theta_0\theta_1 - \num{4e5}\theta_0 - \num{4e9}\theta_1 + \num{4e10}
