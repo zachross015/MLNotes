@@ -1,30 +1,4 @@
-\documentclass{book}[a5paper]
-\usepackage[a5paper]{geometry}
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath}
-\usepackage{amsthm}
-\usepackage{amssymb}
-\usepackage{pgfplots, pgfplotstable}
-\usepackage{float}
-
-% Speed up the compile time for TIKZ
-%\usepgfplotslibrary{external}
-%\tikzexternalize
-
-\newcommand{\placeholder}{[Insert Section Here]}
-
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{corollary}{Corollary}[theorem]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem*{remark}{Remark}
-
-\title{Note From the Author}
-\author{Zachary Ross}
-\date{November 2019}
-
-\begin{document}
-
-\chapter{Note from the author}
+\chapter*{Note from the author}
 
 In writing this, the author has made it a goal to make every section as accessible to the broadest of audience as possible, while still retaining a poetic vocabulary. He subscribes to the belief that if you can't explain it to a child, then you don't understand the concept. He also believes that although Math is a language, it should not be a barrier that prevents the reader, who may or may not care about mathematics, from learning topics. It should only be used to establish  links between concepts where words can not describe or where math describes the topic more elegantly. Even when math is used, it should be clear what is being described and how it connects to previous concepts. He believes the readability standard held in computer science should apply to math as well.
 
@@ -35,5 +9,3 @@ After expanding, this gives us the completed definition for a hypothesis functio
     r(\theta, X) \rightarrow hypothesis(weights, features)
 \end{equation}
 Isn't that just magical? However, it is solely ideal. There comes alot of times where this notation just bloat the paper, specifically when variable names clutter the page. Because of this, the author has decided to use function names as more descriptive, while leaving the parameters and variables as used in most mathematical papers.
-
-\end{document}
