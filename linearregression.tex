@@ -246,7 +246,7 @@ that we want to pick a point in the domain and move this point along the directi
 somewhere, and considering the parabolic shape in figure \ref{fg:cost} contains a
 global minimum, any point in the domain will be a viable option. So we will start at the origin so that $\vec\theta = \vec0$. We find the direction of the curve at this point by taking the directional derivatives. So by starting at the origin, the gradient $\nabla cost(\vec\theta)$ will give us a vector with the magnitude of direction along both axes of the curve.
 
-We then want to take a step in each respective direction and adjust our weights accordingly. Note that any points before the minimum will have a negative gradient, and any points after will have a positive gradient, so to move towards the center we always subtract the gradient from our weights.
+We then want to take a step in each respective direction and adjust our weights accordingly. Note that any points before the minimum will have a negative gradient, and any points after will have a positive gradient, so subtracting the gradient from our weights will always move us closer to the minimum.
 \begin{equation}
 \vec\theta \leftarrow \vec\theta - \nabla cost(\vec\theta) \Longleftrightarrow \vec\theta \leftarrow \vec0 - \nabla cost(\vec0)
 \end{equation}
