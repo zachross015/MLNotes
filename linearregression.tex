@@ -4,6 +4,8 @@
 % - https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data
 
 
+% TODO: Sprinkle in actual examples from the data. Right now the explanation is highly theoretical, which is far from what we are trying to do (even though the concepts are purely theoretical...)
+
 % TODO: Explain this better. It sounds robotic and unintuitive. This shit needs
 % to be a STORY
 The main focus of this section is predicting a real number when given a set of
@@ -67,11 +69,11 @@ to all of the recorded examples.
 This relationship is the basis for any linear function of the form $y=ax + b$
 with the slope coefficient $a$ describing the correlation between housing
 price/plot area and the offset $b$ describing the overall starting price for
-houses in Ames. We prescribe these coefficients to the vector of prices $\theta
-= \begin{pmatrix}\theta_0 \\ \theta_1\end{pmatrix}$ such that the base price is
-$b = \theta_0$ and the price per ft$^2$ of plot area is $a=\theta_1$. This
+houses in Ames. We prescribe these coefficients to the vector of prices $\vec\theta
+= \begin{pmatrix}\vec\theta_0 \\ \vec\theta_1\end{pmatrix}$ such that the base price is
+$b = \vec\theta_0$ and the price per ft$^2$ of plot area is $a=\vec\theta_1$. This
 coefficient vector is known as the \emph{weight vector} since we adjust the
-values in $\theta$ until we find coefficients that best fit the data. In
+values in $\vec\theta$ until we find coefficients that best fit the data. In
 context, this linear function will predict the ideal price of any house in
 Ames after learning from the experiences we feed it.
 
@@ -80,7 +82,7 @@ are determined. Let $X$ be the training set, i.e. the set containing all of the
 recorded plot areas. Let $X^{(i)}$ be the plot area for the $i$th feature in
 $X$. From what we've discussed, the equation
 \begin{equation}
-    hypothesis_{\theta}(X^{(i)}) = \theta_0 + \theta_1X^{(i)}
+    hypothesis_{\vec\theta}(X^{(i)}) = \vec\theta_0 + \vec\theta_1X^{(i)}
 \end{equation}
 should ideally give us the correct price for $X^{(i)}$. The key word in the last
 sentence is \emph{ideally} since the hypothesis function will only give us 100\%
@@ -104,8 +106,8 @@ finding this distance here until that section is written.
     \resizebox{0.5\textwidth}{!}{
         \begin{tikzpicture}[every label/.style={align=center}]
             \node[draw, fill=black, label=right:{Actual Result \\ $y^{(i)}$}] (v1) at (5,6) {};
-            \node[draw, fill=black, label=right:{Expected result \\ $hypothesis_{\theta}(X^{(i)})$}] (v2) at (5,3) {};
-            \node[draw, fill=black, label=below:{Base price \\ $\theta_0$}] (v3) at (0,1) {};
+            \node[draw, fill=black, label=right:{Expected result \\ $hypothesis_{\vec\theta}(X^{(i)})$}] (v2) at (5,3) {};
+            \node[draw, fill=black, label=below:{Base price \\ $\vec\theta_0$}] (v3) at (0,1) {};
 
             \draw[dotted] (0,0) grid (10,7);
             \draw (0,1) -- (10,5);
@@ -132,17 +134,17 @@ error. This will be further discussed in \placeholder.
 The squared distance between any two points is the squared norm $\| point_1 -
 point_2 \|^2$ or equivalently $(point_{1x}-point_{2x})^2$ $+$
 $(point_{1y}-point_{2y})^2$. When we substitute in the points $(X^{(i)},
-hypothesis_{\theta}(X^{(i)}))$ and $(X^{(i)}, y^{(i)})$, the $x$ values cancel
+hypothesis_{\vec\theta}(X^{(i)}))$ and $(X^{(i)}, y^{(i)})$, the $x$ values cancel
 out, reducing this down to the distance between the two $y$ values. Putting this
 all together, we define our loss function as:
 \begin{equation}
-    loss_{\theta}(X^{(i)}, y^{(i)}) = (hypothesis_{\theta}(X^{(i)}) - y^{(i)})^2
+    loss_{\vec\theta}(X^{(i)}, y^{(i)}) = (hypothesis_{\vec\theta}(X^{(i)}) - y^{(i)})^2
 \end{equation}
 
 Now that we have a method for calculating the amount of loss a single feature
-has with weights $\theta$, we need a method for determining the overall loss of
+has with weights $\vec\theta$, we need a method for determining the overall loss of
 our weights. That is, we need some function, called the \emph{cost function},
-that quantifies the uncertainty of $\theta$. There are several such methods for
+that quantifies the uncertainty of $\vec\theta$. There are several such methods for
 quantifiying this uncertainty, however those are discussed further in Section
 \placeholder. For now, an effective method for achieving this is by averaging
 the loss over the entire training set. This method is known as the \emph{mean
@@ -150,17 +152,17 @@ squared error (MSE)}. So if we let $m$ be the number of features in $X$, the
 cost function
 \begin{subequations}
     \begin{align}
-        cost(\theta) = \frac{1}{m}\sum_{i=1}^m loss_{\theta}(X^{(i)}, y^{(i)}) \\
-    \intertext{will give us a good estimate for how well $\theta$ is performing
+        cost(\vec\theta) = \frac{1}{m}\sum_{i=1}^m loss_{\vec\theta}(X^{(i)}, y^{(i)}) \\
+    \intertext{will give us a good estimate for how well $\vec\theta$ is performing
         in the hypothesis. Expanded out, this is equivelent to}
-        cost(\theta) = \frac{1}{m}\sum_{i=1}^m (\theta_0 + \theta_1X^{(i)} -
+        cost(\vec\theta) = \frac{1}{m}\sum_{i=1}^m (\vec\theta_0 + \vec\theta_1X^{(i)} -
         y^{(i)})^2
     \end{align}
 \end{subequations}
 .
 
 Since we have this function that measures the overall loss, the next step would
-be finding values of $\theta$ that minimize this value. This would mean finding
+be finding values of $\vec\theta$ that minimize this value. This would mean finding
 a base price and price per ft$^2$ that matches the data enough such that the
 hypothesized price would be reasonably close to the recorded price. What we're
 essentially looking for are \emph{the coordinates of a point in the cost
@@ -183,7 +185,7 @@ cost}. To do this, let's consider the shape of the cost function.
             ticks = none,
             set layers = default
             xmin = 0, ymin = 0, zmin = 0,
-            xlabel=$\theta_0$, ylabel={$\theta_1$}, zlabel={$cost(\theta)$},
+            xlabel=$\vec\theta_0$, ylabel={$\vec\theta_1$}, zlabel={$cost(\vec\theta)$},
             xlabel style={anchor=south east},
             ylabel style={anchor=south west},
             zlabel style={anchor=south west},
@@ -203,48 +205,35 @@ cost}. To do this, let's consider the shape of the cost function.
 \end{figure}
 
 The loss function expands out to be a second degree polynomial in two
-dimensions, and we can identify each of the leading terms to be $\theta_0^2$ and
-$\theta_1^2$. This is unaffected by the summation in the cost function, so it
+dimensions, and we can identify each of the leading terms to be $\vec\theta_0^2$ and
+$\vec\theta_1^2$. This is unaffected by the summation in the cost function, so it
 has the same form. We visualize what this would look like in figure
-\ref{fg:cost}. From there, we can see the inputs $\theta$ and ouptuts of
-$cost(\theta)$ form an \emph{elliptical paraboloid}.
+\ref{fg:cost}. From there, we can see the inputs $\vec\theta$ and ouptuts of
+$cost(\vec\theta)$ form an \emph{elliptical paraboloid}.
 
 The coordinates we are looking for are then the exact point where this
 paraboloid bottoms out since this will give us the minimum cost. We can obtain
 this point by noting the graph has an \emph{inflection point} at the point $P =
-(\theta_x, \theta_y)$ where we go from descending the paraboloid's curve to
+(\vec\theta_x, \vec\theta_y)$ where we go from descending the paraboloid's curve to
 ascending it. That is, if we were to take points $P_1$, $P_2$, $P_3$, and $P_4$
 with $P_1 < P_2 < P < P_3 < P_4$ then $cost(P_2) - cost(P_1)$ would be negative
 while $cost(P_4) - cost(P_3)$ would be positive. As we approach $P$ from either
-side of the inflection, we expect to see the net change being 
+side of the inflection, we expect to see the net change being
 reduced to infinitely small amounts. This makes sense since at
 $P$ we are neither descending or ascending and as we move closer to it we see
 the amount change reflecting this. This is by definition when the gradient of
-the cost function is 0: $\nabla cost(\theta) = \vec{0}$.
+the cost function is 0: $\nabla cost(\vec\theta) = \vec{0}$.
 
 % TODO: Site source https://stanford.edu/~rezab/classes/cme323/S16/notes/Lecture03/cme323_lec3.pdf
 Solving for this gradient is, however, computationally infeasible. As we will
 see later on, the growth of this type of function is much too large for many
 modern computers to handle efficiently, especially as we begin adding more
 components to our features. Even for this simple example, we end up attempting
-to find solutions for the linear system
-\begin{equation*}
-    \begin{pmatrix}
-        m & \sum_{i=1}^{m}X^{(i)} \\[6pt] 
-        \sum_{i=1}^{m}X^{(i)} & \sum_{i=1}^{m}X^{(i)2}
-    \end{pmatrix}
-    \theta
-    =
-    \begin{pmatrix}
-        -\sum_{i=1}^{m}y^{(i)} \\[6pt]
-        -\sum_{i=1}^{m}X^{(i)}y^{(i)} \\
-    \end{pmatrix}
-\end{equation*}
-. This solution is of the form $A\theta = B$, and so we could find these weights
-by computing $\theta =A^{-1}B$. This has a lower computational bound of
+to find solutions for a linear system of the form $A\vec\theta = B$, and so we could find these weights
+by computing $\vec\theta =A^{-1}B$. This has a lower computational bound of
 $O(n^{2.375})$ when using a variant of \emph{Strassen's algorithm} discovered by
 Virginia Williams [Source]. $n$ in this case is the number of weights in
-$\theta$. However, the algorithm tends to only be advantageous over the naive
+$\vec\theta$. However, the algorithm tends to only be advantageous over the naive
 version of matrix multiplication when a specific RAM model (PRAM, for more see
 [source]) is used and when $n \geq 1,000$. Otherwise, the traditional form of
 matrix multiplication is nearly as effective. This puts us at a lower bound of
@@ -252,22 +241,19 @@ $O(n^3)$, which is highly inefficient when dealing with models of any caliber.
 
 Because finding exact solutions is infeasible, we instead seek to approximate
 these values as closely as we can. So how do we go from having unknown values of
-$\theta$ to precise values that approximate the dataset? The general idea is
-that we want to pick a point in the domain and make incremental changes to this
-point that follow the gradient until we reach the global minimum. We have to start
-somewhere, and considering the parabolic shape of fg \ref{fg:cost} contains a
-global minimum, any point in the domain will be a viable option. A good place to
-generally start at will be at the origin (0,0). To reach this minimum, we then
-want to take gradual steps towards the minimum by descending the gradient. We
-do this by moving $\theta$ by the changes  we get in the cost
-function's gradient at each increment of step. If we take the step as $\alpha$,
-this comes out as
+$\vec\theta$ to precise values that approximate the dataset? The general idea is
+that we want to pick a point in the domain and move this point along the direction of the curves until we reach the global minimum, almost as if we are trying to slide down the curve. We have to start
+somewhere, and considering the parabolic shape in figure \ref{fg:cost} contains a
+global minimum, any point in the domain will be a viable option. So we will start at the origin so that $\vec\theta = \vec0$. We find the direction of the curve at this point by taking the directional derivatives. So by starting at the origin, the gradient $\nabla cost(\vec\theta)$ will give us a vector with the magnitude of direction along both axes of the curve.
+
+We then want to take a step in each respective direction and adjust our weights accordingly. Note that any points before the minimum will have a negative gradient, and any points after will have a positive gradient, so to move towards the center we always subtract the gradient from our weights.
 \begin{equation}
-    \theta \leftarrow \theta - \alpha \nabla cost(\theta)
+\vec\theta \leftarrow \vec\theta - \nabla cost(\vec\theta) \Longleftrightarrow \vec\theta \leftarrow \vec0 - \nabla cost(\vec0)
 \end{equation}
 
+
 % TODO: In Regularization/normalization, explain why inputs generally need to be scaled. This function with its weights already looks like
-% \theta_0^2 + \num{1e8}\theta_1^2 + \num{2e4}\theta_0\theta_1 - \num{4e5}\theta_0 - \num{4e9}\theta_1 + \num{4e10}
+% \vec\theta_0^2 + \num{1e8}\vec\theta_1^2 + \num{2e4}\vec\theta_0\vec\theta_1 - \num{4e5}\vec\theta_0 - \num{4e9}\vec\theta_1 + \num{4e10}
 
 \begin{exercise}
     \ex Why is the squared distance taken instead of the abolute distance?
