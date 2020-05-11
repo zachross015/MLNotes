@@ -20,22 +20,12 @@ gathered data. So the question is, how do we form this function?
     \begin{tikzpicture}
         \selectcolormodel{gray}
         \begin{axis}[
-                title = {HOUSE PRICES AND WITH PLOT AREAS},  % whatever name you want
+                title = {HOUSE PRICES AND PLOT AREAS},  % whatever name you want
                 xlabel = {Plot Area in 1,000 ft$^2$},
                 ylabel = {House Price in \$100,000},
-                tick label style={/pgf/number format/fixed},
-                scaled y ticks = false,
-                scaled x ticks = false,
-                yticklabel={
-                    \fpeval{\tick / 100000}               % Divide the y coordinate/1000
-                },
-                xticklabel={
-                    \fpeval{\tick / 1000}               % Divide the y coordinate/1000
-                },
             ]
             \addplot[
                 only marks,
-                select coords between index={1}{50},
                 ] table[col sep=comma]{linreg_houseprice.csv};
         \end{axis}
     \end{tikzpicture}
@@ -70,34 +60,25 @@ This relationship is the basis for any linear function of the form $y=ax + b$
 with the slope coefficient $a$ describing the correlation between housing
 price/plot area and the offset $b$ describing the overall starting price for
 houses in Ames. We prescribe these coefficients to the vector of prices $\vec\theta
-= \begin{pmatrix}\vec\theta_0 \\ \vec\theta_1\end{pmatrix}$ such that the base price is
-$b = \vec\theta_0$ and the price per ft$^2$ of plot area is $a=\vec\theta_1$. This
+= \begin{pmatrix}\theta_0 \\ \theta_1\end{pmatrix}$ such that the base price is
+$b = \theta_0$ and the price per ft$^2$ of plot area is $a=\theta_1$. This
 coefficient vector is known as the \emph{weight vector} since we adjust the
 values in $\vec\theta$ until we find coefficients that best fit the data. In
 context, this linear function will predict the ideal price of any house in
-Ames after learning from the experiences we feed it.
+Ames after learning from the experiences we feed it. 
 
-Examining these properties sets us up to form a hypothesis for how house prices
+For the purpose of observing how $\vec\theta$ is used, we will start off with setting the base price to \$50,000 and the price per ft$^2$ to \$200, or $\theta_0 \leftarrow 0.5$ and $\theta_1 \leftarrow 0.2$. The choice for starting $\theta_0$ at $0.5$ was made solely because the minimum price was around this value, and as such the author made an educated guess for where the base price may occur. Likewise, $\theta_1$ was chosen as an educated guess given the graph in Figure \ref{fg:hp}. 
+
+Examining the slope properties sets us up to form a hypothesis for how house prices
 are determined. Let $X$ be the training set, i.e. the set containing all of the
 recorded plot areas. Let $X^{(i)}$ be the plot area for the $i$th feature in
 $X$. From what we've discussed, the equation
 \begin{equation}
-    hypothesis_{\vec\theta}(X^{(i)}) = \vec\theta_0 + \vec\theta_1X^{(i)}
+    hypothesis_{\vec\theta}(X^{(i)}) = \theta_0 + \theta_1X^{(i)} 
 \end{equation}
-should ideally give us the correct price for $X^{(i)}$. The key word in the last
-sentence is \emph{ideally} since the hypothesis function will only give us 100\%
-accuracy when all the data in the data set lies exactly on the line formed by
-the hypothesis. This would mean that each square foot of plot area would cost
-the exact same amount at every house you check. However optimal this is, it is
-generally not the case. Instead, we look to maximize the accuracy of this
-function or otherwise minimize the \emph{loss}.
+should ideally give us the correct price for $X^{(i)}$. So for the first feature in our dataset with a plot area of 8,450 ft$^2$, we'll get the hypothetical price \$219,000 after calculation. Seems somewhat accurate, right?  This wouldn't be too bad, except after comparing this to the original price of this house, we notice that this price has overshot the original by nearly \$10,500. Not only that, but this hypothesis generally overshoots the average price for larger plot areas and undershoots the average for smaller ones. 
 
-
-We begin measuring the error of our hypothesis by comparing it with the
-previously collected data.  An intuitive way for measuring the  error of the
-hypothesis would be by measuring the shortest distance between the value it
-predicts and the recorded value since this, in a literal sense, tells us how far
-off our prediction was from the result. This, along with other measurements,
+A logical next step to examining the overall effectiveness of this hypothesis would then be finding a way to summarize how ineffective our hypothesis is. We can do this by measuring the smallest distance between each hypothetical price and the corresponding measured price. This distance is called the \emph{loss}. This, along with other measurements,
 is discussed more in \placeholder. However, we will still derive the process for
 finding this distance here until that section is written.
 
@@ -107,7 +88,7 @@ finding this distance here until that section is written.
         \begin{tikzpicture}[every label/.style={align=center}]
             \node[draw, fill=black, label=right:{Actual Result \\ $y^{(i)}$}] (v1) at (5,6) {};
             \node[draw, fill=black, label=right:{Expected result \\ $hypothesis_{\vec\theta}(X^{(i)})$}] (v2) at (5,3) {};
-            \node[draw, fill=black, label=below:{Base price \\ $\vec\theta_0$}] (v3) at (0,1) {};
+            \node[draw, fill=black, label=below:{Base price \\ $\theta_0$}] (v3) at (0,1) {};
 
             \draw[dotted] (0,0) grid (10,7);
             \draw (0,1) -- (10,5);
@@ -123,9 +104,8 @@ We see how this is found in Figure \ref{fg:err} by examining the case for a
 single feature. First, the hypothesis function predicts a result for $X^{(i)}$.
 We then compare this to the original result $y^{(i)}$ by finding the distance
 between these two points, also known as the \emph{residual} or the \emph{error}
-and is measured by the length of the line marked by (a). We can find this
-distance in two ways, those being the \emph{squared distance} and the
-\emph{absolute distance}, both of which result in a positive value. We prefer
+and is measured by the length of the line marked by (a). We want this distance to be positive, since our goal in the end is to summarize the data in a way that values lying either above or below the hypothesis affect the overall loss in the same way. This measurement can be taken in two ways, those being the \emph{squared distance} and the
+\emph{absolute distance}, both of which achieve what we were looking for. We prefer
 the squared distance in this scenario because the algebra comes out much neater
 than that of the absolute distance, most notably in the calculations later on in
 this section, however both have their pros and cons when determining residual
@@ -155,7 +135,7 @@ cost function
         cost(\vec\theta) = \frac{1}{m}\sum_{i=1}^m loss_{\vec\theta}(X^{(i)}, y^{(i)}) \\
     \intertext{will give us a good estimate for how well $\vec\theta$ is performing
         in the hypothesis. Expanded out, this is equivelent to}
-        cost(\vec\theta) = \frac{1}{m}\sum_{i=1}^m (\vec\theta_0 + \vec\theta_1X^{(i)} -
+        cost(\vec\theta) = \frac{1}{m}\sum_{i=1}^m (\theta_0 + \theta_1X^{(i)} -
         y^{(i)})^2
     \end{align}
 \end{subequations}
@@ -185,7 +165,7 @@ cost}. To do this, let's consider the shape of the cost function.
             ticks = none,
             set layers = default
             xmin = 0, ymin = 0, zmin = 0,
-            xlabel=$\vec\theta_0$, ylabel={$\vec\theta_1$}, zlabel={$cost(\vec\theta)$},
+            xlabel=$\theta_0$, ylabel={$\theta_1$}, zlabel={$cost(\vec\theta)$},
             xlabel style={anchor=south east},
             ylabel style={anchor=south west},
             zlabel style={anchor=south west},
@@ -205,8 +185,8 @@ cost}. To do this, let's consider the shape of the cost function.
 \end{figure}
 
 The loss function expands out to be a second degree polynomial in two
-dimensions, and we can identify each of the leading terms to be $\vec\theta_0^2$ and
-$\vec\theta_1^2$. This is unaffected by the summation in the cost function, so it
+dimensions, and we can identify each of the leading terms to be $\theta_0^2$ and
+$\theta_1^2$. This is unaffected by the summation in the cost function, so it
 has the same form. We visualize what this would look like in figure
 \ref{fg:cost}. From there, we can see the inputs $\vec\theta$ and ouptuts of
 $cost(\vec\theta)$ form an \emph{elliptical paraboloid}.
@@ -214,7 +194,7 @@ $cost(\vec\theta)$ form an \emph{elliptical paraboloid}.
 The coordinates we are looking for are then the exact point where this
 paraboloid bottoms out since this will give us the minimum cost. We can obtain
 this point by noting the graph has an \emph{inflection point} at the point $P =
-(\vec\theta_x, \vec\theta_y)$ where we go from descending the paraboloid's curve to
+(\theta_x, \theta_y)$ where we go from descending the paraboloid's curve to
 ascending it. That is, if we were to take points $P_1$, $P_2$, $P_3$, and $P_4$
 with $P_1 < P_2 < P < P_3 < P_4$ then $cost(P_2) - cost(P_1)$ would be negative
 while $cost(P_4) - cost(P_3)$ would be positive. As we approach $P$ from either
