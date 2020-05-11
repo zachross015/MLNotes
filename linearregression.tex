@@ -26,12 +26,19 @@ gathered data. So the question is, how do we form this function?
             ]
             \addplot[
                 only marks,
+                domain={4:18}
                 ] table[col sep=comma]{linreg_houseprice.csv};
+            \addplot[
+            		gray,
+            		thick,
+            		dashed,
+            		domain={4:18}
+            ]{0.5 + 0.2*x};
         \end{axis}
     \end{tikzpicture}
     \caption{List of plot areas and selling prices for houses in Ames, Iowa.
     Looking at these kind of plots, we can try to find correlations in the data
-    that help us predict what future houses may cost in that market.}
+    that help us predict what future houses may cost in that market. The dashed line is our hypothesis when $\theta_0$ is \$50,000 and when $\theta_1$ is \$200.}
     \label{fig:hp}
 \end{figure}
 
@@ -67,81 +74,35 @@ values in $\vec\theta$ until we find coefficients that best fit the data. In
 context, this linear function will predict the ideal price of any house in
 Ames after learning from the experiences we feed it. 
 
-For the purpose of observing how $\vec\theta$ is used, we will start off with setting the base price to \$50,000 and the price per ft$^2$ to \$200, or $\theta_0 \leftarrow 0.5$ and $\theta_1 \leftarrow 0.2$. The choice for starting $\theta_0$ at $0.5$ was made solely because the minimum price was around this value, and as such the author made an educated guess for where the base price may occur. Likewise, $\theta_1$ was chosen as an educated guess given the graph in Figure \ref{fg:hp}. 
+For the purpose of demonstrating how $\vec\theta$ is used, we will make educated guesses for these weights and use these until we have finished deriving this method of weight balancing. The graph in Figure \ref{fg:hp} has a minimum cost at about \$50,000, so it would make sense for this to be an adequate base price. So we'll set $\theta_0 \leftarrow 50,000$. And based on the domain and range of the data, we can assume the plot area price rises at a rate of $\frac{300-100}{1,600-600}$ or about \$200 per ft$^2$. So we will set $\theta_1 \leftarrow 200$.
 
-Examining the slope properties sets us up to form a hypothesis for how house prices
-are determined. Let $X$ be the training set, i.e. the set containing all of the
+Let $X$ be the training set, i.e. the set containing all of the
 recorded plot areas. Let $X^{(i)}$ be the plot area for the $i$th feature in
 $X$. From what we've discussed, the equation
 \begin{equation}
     hypothesis_{\vec\theta}(X^{(i)}) = \theta_0 + \theta_1X^{(i)} 
 \end{equation}
-should ideally give us the correct price for $X^{(i)}$. So for the first feature in our dataset with a plot area of 8,450 ft$^2$, we'll get the hypothetical price \$219,000 after calculation. Seems somewhat accurate, right?  This wouldn't be too bad, except after comparing this to the original price of this house, we notice that this price has overshot the original by nearly \$10,500. Not only that, but this hypothesis generally overshoots the average price for larger plot areas and undershoots the average for smaller ones. 
+should hypothetically give us the correct price for $X^{(i)}$. So for the first feature in our dataset with a plot area of 8,450 ft$^2$, we'll get the hypothetical price \$219,000 after calculation. Seems somewhat accurate, right?  This wouldn't be too bad, except after comparing this to the original price of this house, we notice that this price has overshot the original by nearly \$10,500. Not only that, but this hypothesis generally overshoots the average price for plot areas of any size as we can see clearly in Figure \ref{fg:hp}.
 
-A logical next step to examining the overall effectiveness of this hypothesis would then be finding a way to summarize how ineffective our hypothesis is. We can do this by measuring the smallest distance between each hypothetical price and the corresponding measured price. This distance is called the \emph{loss}. This, along with other measurements,
-is discussed more in \placeholder. However, we will still derive the process for
-finding this distance here until that section is written.
-
-\begin{wrapfigure}{O}{0.5\textwidth}
-    \centering
-    \resizebox{0.5\textwidth}{!}{
-        \begin{tikzpicture}[every label/.style={align=center}]
-            \node[draw, fill=black, label=right:{Actual Result \\ $y^{(i)}$}] (v1) at (5,6) {};
-            \node[draw, fill=black, label=right:{Expected result \\ $hypothesis_{\vec\theta}(X^{(i)})$}] (v2) at (5,3) {};
-            \node[draw, fill=black, label=below:{Base price \\ $\theta_0$}] (v3) at (0,1) {};
-
-            \draw[dotted] (0,0) grid (10,7);
-            \draw (0,1) -- (10,5);
-            \draw[thick] (v1) -- (v2) node [midway, fill=white] {(a)};
-        \end{tikzpicture}
-    }
-    \caption{Visual representation of the distance between expected and actual
-    results.}
-    \label{fg:err}
-\end{wrapfigure}
-
-We see how this is found in Figure \ref{fg:err} by examining the case for a
-single feature. First, the hypothesis function predicts a result for $X^{(i)}$.
-We then compare this to the original result $y^{(i)}$ by finding the distance
-between these two points, also known as the \emph{residual} or the \emph{error}
-and is measured by the length of the line marked by (a). We want this distance to be positive, since our goal in the end is to summarize the data in a way that values lying either above or below the hypothesis affect the overall loss in the same way. This measurement can be taken in two ways, those being the \emph{squared distance} and the
-\emph{absolute distance}, both of which achieve what we were looking for. We prefer
-the squared distance in this scenario because the algebra comes out much neater
-than that of the absolute distance, most notably in the calculations later on in
-this section, however both have their pros and cons when determining residual
-error. This will be further discussed in \placeholder.
-
-The squared distance between any two points is the squared norm $\| point_1 -
-point_2 \|^2$ or equivalently $(point_{1x}-point_{2x})^2$ $+$
-$(point_{1y}-point_{2y})^2$. When we substitute in the points $(X^{(i)},
-hypothesis_{\vec\theta}(X^{(i)}))$ and $(X^{(i)}, y^{(i)})$, the $x$ values cancel
-out, reducing this down to the distance between the two $y$ values. Putting this
-all together, we define our loss function as:
+So we are off by about \$10,500 for this first example. This measurement, the distance between our prediction and the recorded result, is defined as the \emph{loss} of our hypothesis. If we were to average all the loss in our function by averaging the difference between our predicted and recorded values, we would end up losing about \$70,410.47 per house. What is worse is that this value is an underestimate of our actual average loss, or $\emph{cost}$. This is an immediate consequence of undershot values having a negative distance while overshot values are positive. We alleviate this in one of two ways, those being either squaring the loss or taking the absolute value of the loss. Each of these have their own situational benefits discussed further in \placeholder, however we will suffice to square the loss for now. This allows us to define our loss function as 
 \begin{equation}
-    loss_{\vec\theta}(X^{(i)}, y^{(i)}) = (hypothesis_{\vec\theta}(X^{(i)}) - y^{(i)})^2
+	loss_{\vec\theta}(X^{(i)}) = (hypothesis_{\vec\theta}(X^{(i)}) - y^{(i)})^2	
 \end{equation}
+. 
 
-Now that we have a method for calculating the amount of loss a single feature
-has with weights $\vec\theta$, we need a method for determining the overall loss of
-our weights. That is, we need some function, called the \emph{cost function},
-that quantifies the uncertainty of $\vec\theta$. There are several such methods for
-quantifiying this uncertainty, however those are discussed further in Section
-\placeholder. For now, an effective method for achieving this is by averaging
-the loss over the entire training set. This method is known as the \emph{mean
-squared error (MSE)}. So if we let $m$ be the number of features in $X$, the
-cost function
+Putting this together, we end up with an average loss closer to \$97,610.81 for our choices of $\vec\theta$ when using the cost function is
+
 \begin{subequations}
     \begin{align}
         cost(\vec\theta) = \frac{1}{m}\sum_{i=1}^m loss_{\vec\theta}(X^{(i)}, y^{(i)}) \\
-    \intertext{will give us a good estimate for how well $\vec\theta$ is performing
-        in the hypothesis. Expanded out, this is equivelent to}
+    \intertext{or equivelently}
         cost(\vec\theta) = \frac{1}{m}\sum_{i=1}^m (\theta_0 + \theta_1X^{(i)} -
         y^{(i)})^2
     \end{align}
 \end{subequations}
 .
 
-Since we have this function that measures the overall loss, the next step would
+Since we have this function that measures the cost, the next step would
 be finding values of $\vec\theta$ that minimize this value. This would mean finding
 a base price and price per ft$^2$ that matches the data enough such that the
 hypothesized price would be reasonably close to the recorded price. What we're
@@ -224,7 +185,9 @@ these values as closely as we can. So how do we go from having unknown values of
 $\vec\theta$ to precise values that approximate the dataset? The general idea is
 that we want to pick a point in the domain and move this point along the direction of the curves until we reach the global minimum, almost as if we are trying to slide down the curve. We have to start
 somewhere, and considering the parabolic shape in figure \ref{fg:cost} contains a
-global minimum, any point in the domain will be a viable option. So we will start at the origin so that $\vec\theta = \vec0$. We find the direction of the curve at this point by taking the directional derivatives. So by starting at the origin, the gradient $\nabla cost(\vec\theta)$ will give us a vector with the magnitude of direction along both axes of the curve.
+global minimum, any point in the domain will be a viable option. Although we have been using estimated points this entire time, note that it is completely viable to start at the origin so that $\vec\theta = \vec0$. We find the direction of the curve at this point by taking the directional derivatives. So by starting at the origin, the gradient $\nabla cost(\vec\theta)$ will give us a vector with the magnitude of direction along both axes of the curve.
+
+% TODO: Add parts from current example
 
 We then want to take a step in each respective direction and adjust our weights accordingly. Note that any points before the minimum will have a negative gradient, and any points after will have a positive gradient, so subtracting the gradient from our weights will always move us closer to the minimum.
 \begin{equation}
