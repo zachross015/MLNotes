@@ -79,21 +79,21 @@ $b = \theta_0$ and the price per ft$^2$ of plot area is $a=\theta_1$. This
 coefficient vector is known as the \emph{weight vector} since we adjust the
 values in $\vec\theta$ until we find coefficients that best fit the data. In
 context, this linear function will predict the ideal price of any house in
-Ames after learning from the experiences we feed it. 
+Ames after learning from the experiences we feed it.
 
 Let $X$ be the training set, i.e. the set containing all of the
 recorded plot areas. Let $X^{(i)}$ be the plot area for the $i$th feature in
 $X$. From what we've discussed about slope, the equation
 \begin{equation}
-    hypothesis_{\vec\theta}(X^{(i)}) = \theta_0 + \theta_1X^{(i)} 
+    hypothesis_{\vec\theta}(X^{(i)}) = \theta_0 + \theta_1X^{(i)}
 \end{equation}
-should hypothetically give us the correct price for $X^{(i)}$. 
+should hypothetically give us the correct price for $X^{(i)}$.
 
 Now that we have a method of predicting values, it is helpful to see how different choices of $\vec\theta$ interact with our hypothesis. Let us consider two such choices:
 \begin{equation*}
 	\vec\theta_{\uparrow} = \begin{pmatrix}50000 \\ 200\end{pmatrix} \quad 	\vec\theta_{\downarrow} = \begin{pmatrix}0 \\ 100\end{pmatrix}
 \end{equation*}
-. The first choice $\vec\theta_{\uparrow}$ has a base price of \$50,000 and increases by \$200 per ft$^2$ of plot area. The second choice $\vec\theta_{\downarrow}$ has a base at \$0 and increases by \$100. A meaningful question to then ask is: \emph{how well does our hypothesis predict values with these weights?} 
+. The first choice $\vec\theta_{\uparrow}$ has a base price of \$50,000 and increases by \$200 per ft$^2$ of plot area. The second choice $\vec\theta_{\downarrow}$ has a base at \$0 and increases by \$100. A meaningful question to then ask is: \emph{how well does our hypothesis predict values with these weights?}
 
 For the first feature in our dataset with a plot area of 8,450 ft$^2$ we note the original price is \$208,500. When using weights $\vec\theta_{\uparrow}$ we will get the hypothetical price \$219,000 after calculation. Seems somewhat accurate, right? This price only overestimated the original by \$10,500 which is not terrible, specifically when compared to our hypothetical price  with weights $\vec\theta_{\downarrow}$, which gives us \$84,500 and underestimates the data by -\$124,000.
 
@@ -101,20 +101,20 @@ This measurement, the distance between our prediction and the recorded result, i
 \begin{equation*}
 	loss_{\vec\theta}(X^{(i)}) = hypothesis_{\vec\theta}(X^{(i)})-y^{(i)}
 \end{equation*}
-. There is an issue in this definition however, that being an inconsistent measurement between positive and negative values. Underestimations in the hypothesis, as we saw in $loss_{\vec\theta_{\downarrow}}(8450)$, result in a negative loss, which we can almost consider as a gain. This is flawed thinking since this is still an inaccuracy, and so should still be considered a loss. Considering this, we need a more consistant estimate for both overestimations and underestimations. The most apparent way of doing this would be taking the absolute value, making our loss function 
+. There is an issue in this definition however, that being an inconsistent measurement between positive and negative values. Underestimations in the hypothesis, as we saw in $loss_{\vec\theta_{\downarrow}}(8450)$, result in a negative loss, which we can almost consider as a gain. This is flawed thinking since this is still an inaccuracy, and so should still be considered a loss. Considering this, we need a more consistant estimate for both overestimations and underestimations. The most apparent way of doing this would be taking the absolute value, making our loss function
 \begin{subequations}
 \begin{align}
 	loss_{\vec\theta}(X^{(i)}) = |hypothesis_{\vec\theta}(X^{(i)}) - y^{(i)}| \\
 	\intertext{. This is a completely viable option. Another way of achieving this is by squaring the loss }
 	loss_{\vec\theta}(X^{(i)}) = (hypothesis_{\vec\theta}(X^{(i)}) - y^{(i)})^2
-\end{align}	
+\end{align}
 \end{subequations}
 . Each of these have their own situational benefits discussed further in \placeholder, however we will suffice to square the loss for now.
 
-Now let's get back to the original question: how well does our hypothesis predict values with these weights? Given what we have put together, it would make sense to say our hypothesis performs well when our weights have a low average loss across the data set since this would mean our average distance between every prediction and recorded value is low. This measurement, the effectiveness of our hypothesis using $\vec\theta$ across an entire data set, is called the \emph{cost} of $\vec\theta$. We then define the cost function as 
+Now let's get back to the original question: how well does our hypothesis predict values with these weights? Given what we have put together, it would make sense to say our hypothesis performs well when our weights have a low average loss across the data set since this would mean our average distance between every prediction and recorded value is low. This measurement, the effectiveness of our hypothesis using $\vec\theta$ across an entire data set, is called the \emph{cost} of $\vec\theta$. We then define the cost function as
 \begin{subequations}
     \begin{align}
-        cost(\vec\theta) =\underset {0\leq i\leq m}{average}(loss_{\vec\theta}(X^{(i)}, y^{(i)})) \\
+        cost(\vec\theta) =\underset {1\leq i\leq m}{average}(loss_{\vec\theta}(X^{(i)}, y^{(i)})) \\
     \intertext{or equivelently}
         cost(\vec\theta) = \frac{1}{m}\sum_{i=1}^m (\theta_0 + \theta_1X^{(i)} -
         y^{(i)})^2
@@ -128,7 +128,7 @@ For our two choices of $\vec\theta$, we then have the costs
 \end{equation*}
 . Our cost for $\tu$ is lower than that of $\td$, meaning that $\tu$ generally predicts values closer to our data set than $\td$. Still, our lowest cost at the moment is \$99,540.98, meaning on average our hypothesis is off from our actual data by almost \$100k. We can do better than this.
 
-Now that we have a method of evaluating our hypothesis's performance with weights $\vec\theta$, the next question is: what are values of $\vec\theta$ that minimize this cost?  
+Now that we have a method of evaluating our hypothesis's performance with weights $\vec\theta$, the next question is: what are values of $\vec\theta$ that minimize this cost?
 
 We are looking for
 a base price and price per ft$^2$ that matches the data enough such that the
@@ -140,7 +140,7 @@ cost}. To do this, let's consider the shape of the cost function.
 The loss function expands out to be a second degree polynomial in two
 dimensions, and we can identify each of the leading terms to be $\theta_0^2$ and
 $\theta_1^2$. This is unaffected by the summation in the cost function, so it
-has the same form. We visualize what this would look like in 
+has the same form. We visualize what this would look like in
 Figure
 \ref{fig:cost}. From there, we can see the inputs $\vec\theta$ and ouptuts of
 $cost(\vec\theta)$ form an \emph{elliptical paraboloid}.
