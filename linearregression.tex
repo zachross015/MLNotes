@@ -93,7 +93,7 @@ Now that we have a method of predicting values, it is helpful to see how differe
 \begin{equation*}
 	\vec\theta_{\uparrow} = \begin{pmatrix}50000 \\ 200\end{pmatrix} \quad 	\vec\theta_{\downarrow} = \begin{pmatrix}0 \\ 100\end{pmatrix}
 \end{equation*}
-. The first choice $\vec\theta_{\uparrow}$ has a base price of \$50,000 and increases by \$200 per ft$^2$ of plot area. The second choice $\vec\theta_{\downarrow}$ has a base at \$0 and increases by \$100. A meaningful question to then ask is: \emph{how well does our hypothesis predict values with these weights?}
+. The first choice $\vec\theta_{\uparrow}$ has a base price of \$50,000 and increases by \$200 per ft$^2$ of plot area. The second choice $\vec\theta_{\downarrow}$ has a base at \$0 and increases by \$100. As with all of science, we follow this scientific method of creating a hypothesis and testing it's accuracy. If our hypothesis isn't accurate, we often reject it and look for a better estimation of our observations. This is no different for machine learning, so we first want to test this hypothesis to see how well it aligns with our observation. A meaningful question to then ask is: \emph{how well does our hypothesis predict values with these weights?}
 
 For the first feature in our dataset with a plot area of 8,450 ft$^2$ we note the original price is \$208,500. When using weights $\vec\theta_{\uparrow}$ we will get the hypothetical price \$219,000 after calculation. Seems somewhat accurate, right? This price only overestimated the original by \$10,500 which is not terrible, specifically when compared to our hypothetical price  with weights $\vec\theta_{\downarrow}$, which gives us \$84,500 and underestimates the data by -\$124,000.
 
@@ -128,7 +128,7 @@ For our two choices of $\vec\theta$, we then have the costs
 \end{equation*}
 . Our cost for $\tu$ is lower than that of $\td$, meaning that $\tu$ generally predicts values closer to our data set than $\td$. Still, our lowest cost at the moment is \$99,540.98, meaning on average our hypothesis is off from our actual data by almost \$100k. We can do better than this.
 
-Now that we have a method of evaluating our hypothesis's performance with weights $\vec\theta$, the next question is: what are values of $\vec\theta$ that minimize this cost?
+Now that we have a method of evaluating our hypothesis's performance with weights $\vec\theta$, we can reject the original hypothesis and find more suitable weights or we can accept the original results if they seem to have the least cost. Surely we can do better than the current, guess hypothese*s. So the next question is: what are values of $\vec\theta$ that minimize this cost?
 
 We are looking for
 a base price and price per ft$^2$ that matches the data enough such that the
@@ -210,7 +210,7 @@ matrix multiplication is nearly as effective. This puts us at a lower bound of
 $O(n^3)$, which is highly inefficient when dealing with models of any caliber.
 
 Because finding exact solutions is infeasible, we instead seek to approximate
-these values as closely as we can. So how do we go from having unknown values of
+these values as closely as we can. So how do we go from having unknown or otherwise random values of
 $\vec\theta$ to precise values that approximate the dataset? The general idea is
 that we want to pick a point in the domain and move this point along the direction of the curves until we reach the global minimum, almost as if we are trying to slide down the curve. We have to start
 somewhere, and considering the parabolic shape in Figure \ref{fig:cost} contains a
@@ -219,9 +219,16 @@ global minimum, any point in the domain will be a viable option. Although we hav
 % TODO: Add parts from current example
 
 We then want to take a step in each respective direction and adjust our weights accordingly. Note that any points before the minimum will have a negative gradient, and any points after will have a positive gradient, so subtracting the gradient from our weights will always move us closer to the minimum.
+
+The operation being described should be familiar as the gradient descent described in detail in Section \placeholder. After performing this, we end up with the weights converging to 
+$\vec\theta_0 = \$34,600$ and $\vec\theta_1 = \$1,420$ per ft$^2$ for both $\tu$ and $\td$. These are then the minimal weights for the cost function, giving us the base price and price per ft$^2$ the most accurately measure our data. As such, our most accurate measurement for any new feature is given by the hypothesis
 \begin{equation}
-\vec\theta \leftarrow \vec\theta - \nabla cost(\vec\theta)
+	hypothesis_{\vec\theta}(X^{(i)}) = 34600 + 1420X^{(i)}	
 \end{equation}
+
+This slope formula and the method for developing it is called a \emph{linear regression}.
+
+
 
 
 % TODO: In Regularization/normalization, explain why inputs generally need to be scaled. This function with its weights already looks like
