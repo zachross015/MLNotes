@@ -1,0 +1,34 @@
+\section{Gradient Descent}
+\label{st:gradient descent}
+
+
+
+The coordinates we are looking for are then the exact point where this
+paraboloid bottoms out since this is by definition the minimum of the cost
+function. We can obtain this point by noting the graph has an \emph{inflection
+point} at the point $P = (\theta_x, \theta_y)$ where we go from descending the
+paraboloid's curve to ascending it. That is, if we were to take points $P_1$,
+$P_2$, $P_3$, and $P_4$ with $P_1 < P_2 < P < P_3 < P_4$ then $cost(P_2) -
+cost(P_1)$ would be negative while $cost(P_4) - cost(P_3)$ would be positive. As
+we approach $P$ from either side of the inflection, we expect to see the net
+change being reduced to infinitely small amounts. This makes sense since at $P$
+we are neither descending or ascending and as we move closer to it we see the
+amount change reflecting this. This is by definition when the gradient of the
+cost function is 0: $\nabla cost(\vec\theta) = \vec{0}$.
+
+% TODO: Site source
+% https://stanford.edu/~rezab/classes/cme323/S16/notes/Lecture03/cme323_lec3.pdf
+Solving for this gradient is, however, computationally infeasible. As we will
+see later on, the growth of this type of function is much too large for many
+modern computers to handle efficiently, especially as we begin adding more
+components to our features. Even for this simple example, we end up attempting
+to find solutions for a linear system of the form $A\vec\theta = B$, and so we
+could find these weights by computing $\vec\theta =A^{-1}B$. This has a lower
+computational bound of $O(n^{2.375})$ when using a variant of \emph{Strassen's
+algorithm} discovered by Virginia Williams [Source]. $n$ in this case is the
+number of weights in $\vec\theta$. However, the algorithm tends to only be
+advantageous over the naive version of matrix multiplication when a specific RAM
+model (PRAM, for more see [source]) is used and when $n \geq 1,000$. Otherwise,
+the traditional form of matrix multiplication is nearly as effective. This puts
+us at a lower bound of $O(n^3)$, which is highly inefficient when dealing with
+models of any caliber.

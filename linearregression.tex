@@ -13,7 +13,7 @@
 % to be a STORY
 The main focus of this section is predicting a real number when given a set of
 other numbers, or using pre-recorded inputs and outputs to generate new outputs
-for any input we may need. In a linear sense, we are finding a continuous
+for any input we may come across. In a linear sense, we are finding a continuous
 function that takes in one number and spits out another using previously
 gathered data. So the question is, how do we form this function?
 
@@ -70,16 +70,14 @@ never see such a house costing \$0. As such, we should be able to draw a
 straight line through the data from some offset such that we get fairly close
 to all of the recorded examples.
 
-This relationship is the basis for any linear function of the form $y=b + ax$
-with the slope coefficient $a$ describing the correlation between housing
-price/plot area and the offset or bias $b$ describing the overall starting price for
-houses in Ames. We prescribe these coefficients to the vector of prices $\vec\theta
-= \begin{pmatrix}\theta_0 \\ \theta_1\end{pmatrix}$ such that the base price is
-$b = \theta_0$ and the price per ft$^2$ of plot area is $a=\theta_1$. This
-coefficient vector is known as the \emph{weight vector} since we adjust the
-values in $\vec\theta$ until we find coefficients that best fit the data. In
-context, this linear function will predict the ideal price of any house in
-Ames after learning from the experiences we feed it.
+This observation is the basis for any linear relationship of the form
+$y=\theta_0 + \theta_1x$ with the bias $\theta_0$ describing the overall
+starting price for houses in Ames and the slope coefficient $\theta_1$
+describing the correlation between housing price and plot area. When we assign
+these variables as components to a vector $\vec\theta = \begin{pmatrix}\theta_0
+\\ \theta_1\end{pmatrix}$, we end up with what's called the  \textbf{weight
+vector} or just \textbf{weights}. With $\vec\theta$, we adjust the components
+until we find coefficients that best model our data. 
 
 Let $X$ be the training set, i.e. the set containing all of the
 recorded plot areas. Let $X^{(i)}$ be the plot area for the $i$th feature in
@@ -97,7 +95,8 @@ Now that we have a method of predicting values, it is helpful to see how differe
 
 For the first feature in our dataset with a plot area of 8,450 ft$^2$ we note the original price is \$208,500. When using weights $\vec\theta_{\uparrow}$ we will get the hypothetical price \$219,000 after calculation. Seems somewhat accurate, right? This price only overestimated the original by \$10,500 which is not terrible, specifically when compared to our hypothetical price  with weights $\vec\theta_{\downarrow}$, which gives us \$84,500 and underestimates the data by -\$124,000.
 
-This measurement, the distance between our prediction and the recorded result, is defined as the \emph{loss} of our hypothesis. For the previous paragraph, we defined the loss as:
+This measurement, the distance between our prediction and the recorded result,
+is defined as the \textbf{loss} of our hypothesis. For the previous paragraph, we defined the loss as:
 \begin{equation*}
 	loss_{\vec\theta}(X^{(i)}) = hypothesis_{\vec\theta}(X^{(i)})-y^{(i)}
 \end{equation*}
@@ -111,10 +110,16 @@ This measurement, the distance between our prediction and the recorded result, i
 \end{subequations}
 . Each of these have their own situational benefits discussed further in \placeholder, however we will suffice to square the loss for now.
 
-Now let's get back to the original question: how well does our hypothesis predict values with these weights? Given what we have put together, it would make sense to say our hypothesis performs well when our weights have a low average loss across the data set since this would mean our average distance between every prediction and recorded value is low. This measurement, the effectiveness of our hypothesis using $\vec\theta$ across an entire data set, is called the \emph{cost} of $\vec\theta$. We then define the cost function as
+Now let's get back to the original question: how well does our hypothesis
+predict values with these weights? Given what we have put together, it would
+make sense to say our hypothesis performs well when our weights have a low
+average loss across the data set since this would mean our average distance
+between every prediction and recorded value is low. This measurement, the
+effectiveness of our hypothesis using $\vec\theta$ across an entire data set, is
+called the \textbf{cost} of $\vec\theta$. We then define the cost function as
 \begin{subequations}
     \begin{align}
-        cost(\vec\theta) =\underset {1\leq i\leq m}{average}(loss_{\vec\theta}(X^{(i)}, y^{(i)})) \\
+        cost(\vec\theta) = \avg_{1\leq i\leq m} (loss_{\vec\theta}(X^{(i)}, y^{(i)})) \\
     \intertext{or equivelently}
         cost(\vec\theta) = \frac{1}{m}\sum_{i=1}^m (\theta_0 + \theta_1X^{(i)} -
         y^{(i)})^2
@@ -123,27 +128,45 @@ Now let's get back to the original question: how well does our hypothesis predic
 .
 
 For our two choices of $\vec\theta$, we then have the costs
-\begin{equation*}
-	cost(\vec\theta_{\uparrow})= \$99,540.98 \quad \text{and} \quad cost(\vec\theta_{\downarrow}) = \$103,400.92
-\end{equation*}
-. Our cost for $\tu$ is lower than that of $\td$, meaning that $\tu$ generally predicts values closer to our data set than $\td$. Still, our lowest cost at the moment is \$99,540.98, meaning on average our hypothesis is off from our actual data by almost \$100k. We can do better than this.
+\begin{equation}\label{eq:tud cost results}
+    cost(\vec\theta_{\uparrow})= \num{3.8e12} \quad \text{and} \quad
+    cost(\vec\theta_{\downarrow}) = \num{7.4e11}
+\end{equation}
+. Our cost for $\td$ is lower than that of $\tu$, meaning that $\td$ generally
+predicts values closer to our data set than $\tu$. Other then that, the
+information this gives us is rather arbitrary. Since this is a squared distance,
+this would mean the cost of $\td$ is $\num{7.4e11}$ squared dollars, an
+absurdity considering the concept of a squared dollar is nonexistent in any
+currency.  We could take the square root of the summation and find the average
+amount of money that \emph{someone} is losing using weights $\td$ is about
+\$120,719.73, providing us with a little more information on the matter.
+However, this information does little for the computation and only serves to the
+give humans contextual information, so the calculation is left out. This is
+still an egregious sum to lose and surely we can find weights that minimize
+this. Regardless, we now have an effective means of computing our weights'
+performances in the hypothesis.
 
-Now that we have a method of evaluating our hypothesis's performance with weights $\vec\theta$, we can reject the original hypothesis and find more suitable weights or we can accept the original results if they seem to have the least cost. Surely we can do better than the current, guess hypothese*s. So the next question is: what are values of $\vec\theta$ that minimize this cost?
+Since we now have a method of evaluating our hypothesis's performance with
+weights $\vec\theta$, we can search for more suitable weights. Continuing along
+the scientific method, the next question would be: \emph{how can we adjust the
+hypothesis to better suit the data}, or in terms of what we've covered,
+\emph{what are values of $\vec\theta$ that minimize this cost?}
 
-We are looking for
-a base price and price per ft$^2$ that matches the data enough such that the
-hypothesized price would be reasonably close to the recorded price. What we're
-essentially looking for are \emph{the coordinates of a point in the cost
-function's domain that correspond to the lowest lowest possible value for the
-cost}. To do this, let's consider the shape of the cost function.
+We are looking for a base price and price per ft$^2$ that matches the data
+enough such that the hypothesized price would be reasonably close to the
+recorded price. What we're essentially looking for are the coordinates of a
+point in the cost function's domain that correspond to the lowest lowest
+possible value for the cost.
+\begin{equation}
+    \argmin_{\vec\theta} cost(\vec\theta) \Leftrightarrow \nabla
+    cost(\vec\theta) = 0
+\end{equation}
+. To see how this is possible, let's consider the shape of the cost function.
 
 The loss function expands out to be a second degree polynomial in two
 dimensions, and we can identify each of the leading terms to be $\theta_0^2$ and
-$\theta_1^2$. This is unaffected by the summation in the cost function, so it
-has the same form. We visualize what this would look like in
-Figure
-\ref{fig:cost}. From there, we can see the inputs $\vec\theta$ and ouptuts of
-$cost(\vec\theta)$ form an \emph{elliptical paraboloid}.
+$\theta_1^2$. Because the dominating terms are all second degree, our domain and
+range form an \emph{elliptical paraboloid} as seen in Figure \ref{fg:cost}. 
 
 \begin{figure}[t!]
     \centering
@@ -177,66 +200,35 @@ $cost(\vec\theta)$ form an \emph{elliptical paraboloid}.
         \end{axis}
     \end{tikzpicture}
     \caption{The elliptical paraboloid formed by our weights $\vec\theta$ and $cost(\vec\theta)$.}
-    \label{fig:cost}
+    \label{fg:cost}
 \end{figure}
 
+A direct consequence of this shape, as can be noted in the figure, is that a
+global minimum is achievable since it is convex. As such, we can use
+the methods described in Section \ref{st:gradient descent} about gradient
+descent to find the coordinates that minimize the output of the cost function.
+By doing this, we then find the optimal weights for our weight vector and
+minimize the loss generated by the hypothesis.
 
-The coordinates we are looking for are then the exact point where this
-paraboloid bottoms out since this is by definition the minimum of the cost function. We can obtain
-this point by noting the graph has an \emph{inflection point} at the point $P =
-(\theta_x, \theta_y)$ where we go from descending the paraboloid's curve to
-ascending it. That is, if we were to take points $P_1$, $P_2$, $P_3$, and $P_4$
-with $P_1 < P_2 < P < P_3 < P_4$ then $cost(P_2) - cost(P_1)$ would be negative
-while $cost(P_4) - cost(P_3)$ would be positive. As we approach $P$ from either
-side of the inflection, we expect to see the net change being
-reduced to infinitely small amounts. This makes sense since at
-$P$ we are neither descending or ascending and as we move closer to it we see
-the amount change reflecting this. This is by definition when the gradient of
-the cost function is 0: $\nabla cost(\vec\theta) = \vec{0}$.
-
-% TODO: Site source https://stanford.edu/~rezab/classes/cme323/S16/notes/Lecture03/cme323_lec3.pdf
-Solving for this gradient is, however, computationally infeasible. As we will
-see later on, the growth of this type of function is much too large for many
-modern computers to handle efficiently, especially as we begin adding more
-components to our features. Even for this simple example, we end up attempting
-to find solutions for a linear system of the form $A\vec\theta = B$, and so we could find these weights
-by computing $\vec\theta =A^{-1}B$. This has a lower computational bound of
-$O(n^{2.375})$ when using a variant of \emph{Strassen's algorithm} discovered by
-Virginia Williams [Source]. $n$ in this case is the number of weights in
-$\vec\theta$. However, the algorithm tends to only be advantageous over the naive
-version of matrix multiplication when a specific RAM model (PRAM, for more see
-[source]) is used and when $n \geq 1,000$. Otherwise, the traditional form of
-matrix multiplication is nearly as effective. This puts us at a lower bound of
-$O(n^3)$, which is highly inefficient when dealing with models of any caliber.
-
-Because finding exact solutions is infeasible, we instead seek to approximate
-these values as closely as we can. So how do we go from having unknown or otherwise random values of
-$\vec\theta$ to precise values that approximate the dataset? The general idea is
-that we want to pick a point in the domain and move this point along the direction of the curves until we reach the global minimum, almost as if we are trying to slide down the curve. We have to start
-somewhere, and considering the parabolic shape in Figure \ref{fig:cost} contains a
-global minimum, any point in the domain will be a viable option. Although we have been using estimated points this entire time, note that it is completely viable to start at the origin so that $\vec\theta = \vec0$. We find the direction of the curve at this point by taking the directional derivatives. So by starting at the origin, the gradient $\nabla cost(\vec\theta)$ will give us a vector with the magnitude of direction along both axes of the curve.
-
-% TODO: Add parts from current example
-
-We then want to take a step in each respective direction and adjust our weights accordingly. Note that any points before the minimum will have a negative gradient, and any points after will have a positive gradient, so subtracting the gradient from our weights will always move us closer to the minimum.
-
-The operation being described should be familiar as the gradient descent described in detail in Section \placeholder. After performing this, we end up with the weights converging to 
-$\vec\theta_0 = \$34,600$ and $\vec\theta_1 = \$1,420$ per ft$^2$ for both $\tu$ and $\td$. These are then the minimal weights for the cost function, giving us the base price and price per ft$^2$ the most accurately measure our data. As such, our most accurate measurement for any new feature is given by the hypothesis
+ After the descent, we
+end up with the weights converging to $\vec\theta_0 = \$71,663$ and
+$\vec\theta_1 = \$10.79$ per ft$^2$ for both $\tu$ and $\td$. These are then the
+minimal weights for the cost function, giving us the base price and price per
+ft$^2$ that most accurately measure our data. As such, any new house price can
+be estimated with a given plot area by:
 \begin{equation}
-	hypothesis_{\vec\theta}(X^{(i)}) = 34600 + 1420X^{(i)}	
-\end{equation}
-
-This slope formula and the method for developing it is called a \emph{linear regression}.
-
-
-
+    hypothesis_{\vec\theta}(X^{(i)}) = 71663 + 10.79X^{(i)}	
+\end{equation}.
+The cost of this these weights come out as $\num{4.1e9}$ which when using the
+square root method discussed earlier comes out as an average loss of \$8,965.52
+for any house in Ames, Iowa. This is a significant departure from the results
+acheived in the results listed in Equation \ref{eq:tud cost results}, reducing our
+average loss by over \$100,000.
 
 % TODO: In Regularization/normalization, explain why inputs generally need to be scaled. This function with its weights already looks like
 % \vec\theta_0^2 + \num{1e8}\vec\theta_1^2 + \num{2e4}\vec\theta_0\vec\theta_1 - \num{4e5}\vec\theta_0 - \num{4e9}\vec\theta_1 + \num{4e10}
 
-\begin{exercise}
-    \ex Why is the squared distance taken instead of the abolute distance?
-    \ex Why do we take the mean square error instead of the total square error?
-    \ex Compare and contrast the benefits of different loss functions with the
-    MSE in regards to linear regression.
-\end{exercise}
+% TODO: Discuss the following
+%       - When should we dismiss the linear regression as an innacurate
+%       measurement?
+
