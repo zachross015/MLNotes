@@ -98,16 +98,16 @@ For the first feature in our dataset with a plot area of 8,450 ft$^2$ we note th
 This measurement, the distance between our prediction and the recorded result,
 is defined as the \textbf{loss} of our hypothesis. For the previous paragraph, we defined the loss as:
 \begin{equation}\label{eq:incorrect loss}
-	loss_{\vec\theta}(X^{(i)}) = hypothesis_{\vec\theta}(X^{(i)})-y^{(i)}
+	loss_{\vec\theta}(X^{(i)}, y^{(i)}) = hypothesis_{\vec\theta}(X^{(i)})-y^{(i)}
 \end{equation}
 . There is an issue with \ref{eq:incorrect loss} however, that being an inconsistent measurement between positive and negative values. Underestimations in the hypothesis, as we saw in $loss_{\vec\theta_{\downarrow}}(8450)$, result in a negative loss, which we can almost consider as a gain. This is flawed thinking since this is still an inaccuracy, and so should still be considered a loss. Considering this, we need a more consistant estimate for both overestimations and underestimations. The most apparent way of doing this would be taking the absolute value, making our loss function
 \begin{equation}
-	loss_{\vec\theta}(X^{(i)}) = |hypothesis_{\vec\theta}(X^{(i)}) - y^{(i)}|
+	loss_{\vec\theta}(X^{(i)}, y^{(i)}) = |hypothesis_{\vec\theta}(X^{(i)}) - y^{(i)}|
 \end{equation}
 . This is a completely viable option. Another way of achieving this is by
 squaring the loss
 \begin{equation}
-	loss_{\vec\theta}(X^{(i)}) = (hypothesis_{\vec\theta}(X^{(i)}) - y^{(i)})^2
+	loss_{\vec\theta}(X^{(i)}, y^{(i)}) = (hypothesis_{\vec\theta}(X^{(i)}) - y^{(i)})^2
 \end{equation}
 . Each of these have their own situational benefits discussed further in
 \placeholder, however we will suffice to square the loss since its continuity
@@ -223,8 +223,8 @@ be estimated with a given plot area by:
 \end{equation}.
 The cost of these weights come out as $\num{4.1e9}$ which when using the
 square root method discussed earlier comes out as an average loss of \$8,965.52
-for any house in Ames, Iowa. This is a significant departure from the results
-acheived in the results listed in Equation \ref{eq:tud cost results}, reducing our
+for any house in Ames, Iowa. This is a significant improvement from the results
+acheived in Equation \ref{eq:tud cost results}, reducing our
 average loss by over \$100,000.
 
 % TODO: In Regularization/normalization, explain why inputs generally need to be scaled. This function with its weights already looks like

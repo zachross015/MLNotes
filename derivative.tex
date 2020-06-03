@@ -1,0 +1,92 @@
+\subsection{Derivatives}
+
+\begin{psec}{Constants}
+
+    \begin{equation}\label{eq:derivative constant}
+        \dx c = 0
+    \end{equation}
+
+\end{psec}
+
+\begin{psec}{Power rule}
+
+    \begin{equation}\label{eq:derivative power}
+        \dx x^c = c x^{(c - 1)}
+    \end{equation}
+
+\end{psec}
+
+% TODO: Cover polynomials in here
+\begin{psec}{Addition and subtraction}
+
+    \begin{equation}\label{eq:derivative add}
+        \dx (f(x) + g(x)) = \dx[f] + \dx[g]
+    \end{equation}
+
+\end{psec}
+
+\begin{psec}{Product rule}
+
+    \begin{equation}\label{eq:derivative prod}
+        \dx \left(f(x)*g(x)\right) = \dx[f] *  g(x) + f(x) *
+        \dx[g] 
+    \end{equation}
+
+\end{psec}
+
+\begin{psec}{Chain rule}
+
+    \begin{equation}\label{eq:derivative chain}
+        \dx (f \circ g)(x) = \diff{f}{g} * \diff{g}{x}
+    \end{equation}
+
+\end{psec}
+
+\begin{psec}{Quotient Rule} The quotient rule is just an extension of the
+    power, product, and chain rules. We see this immediately since 
+    \begin{equation*}
+        \frac{f(x)}{g(x)} = f(x)g(x)^{-1}
+    \end{equation*}
+    . If we let $h(x) = x^{-1}$ so that $g(x)^{-1} = (h\circ g)(x)$, then we can expand out the product rule as
+    in Equation (\ref{eq:derivative prod})
+    \begin{equation*}
+        \dx \left(f(x) * (h\circ g)(x)\right) = \dx[f] *  (h\circ g)(x) + f(x) *
+        \dx\ [(h\circ g)(x)]
+    \end{equation*}. We then use Equation (\ref{eq:derivative chain}) to expand out the
+    derivative for the composite function $(h \circ g)(x)$
+    \begin{equation*}
+        \dx\ [(h\circ g)(x)] = \diff{h}{g} * \dx[g] = \left[\diff{}{g} g(x)^{-1}
+        \right] * \dx[g]
+    \end{equation*}. Equation (\ref{eq:derivative power}) tells us 
+    \begin{equation*}
+        \diff{}{g} g(x)^{-1} = -g(x)^{-2}
+    \end{equation*}. Putting all this together and simplifying, we end up with
+    the formula
+    \begin{equation}
+        \dx \left(\frac{f(x)}{g(x)}\right) = \frac{\dx[f] * g(x) - f(x) * \dx[g]
+        }{g(x)^2}
+    \end{equation}.
+
+\end{psec}
+
+\begin{psec}{Exponent rule}
+
+    \begin{equation}
+        \dx c ^ {f(x)} = c ^ {f(x)} * \dx[f]
+    \end{equation}
+
+\end{psec}
+
+\begin{psec}{Logarithm rule}
+
+    \begin{equation}
+        \dx \log_c f(x) = \frac{1}{\ln c} * \frac{1}{f(x)} * \dx[f]
+    \end{equation}
+
+\end{psec}
+
+
+\begin{psec}{Trigonometric rules}
+
+
+\end{psec}

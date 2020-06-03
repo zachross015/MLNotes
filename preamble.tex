@@ -10,6 +10,13 @@
 \usepackage{import}
 \usepackage{physics}
 \usepackage{siunitx}
+\usepackage{titlesec}
+\usepackage{enumerate}
+\usepackage{mathtools}
+
+% \diff
+\usepackage[thinc]{esdiff}
+\newcommand\dx[1][]{\diff{#1}{x}}
 
 \usepackage{xfp}
 \usepackage{pgfplots, pgfplotstable}
@@ -51,3 +58,16 @@
 \title{The Art of Machine Learning}
 \author{Zachary Ross}
 \date{November 2019}
+
+\titleformat{\chapter}{\normalfont\sffamily\MakeUppercase}{\chaptertitlename\
+\thechapter}{1em}{\bfseries\Large}
+\titleformat{\section}{\normalfont\sffamily\bfseries\MakeUppercase}{
+    \thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\sffamily\bfseries}{\thesubsection}{1em}{}
+
+% Method for seperating a subsection with letters
+\newcounter{paragraphsection}
+\renewcommand\theparagraphsection{\Alph{paragraphsection}}
+
+\newenvironment{psec}[1]{\noindent\ignorespaces\refstepcounter{paragraphsection}
+   \textbf{\theparagraphsection. #1.}}{}
