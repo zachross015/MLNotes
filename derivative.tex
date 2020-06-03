@@ -1,4 +1,8 @@
-\subsection{Derivatives}
+\subsection{Finding extrema}
+Let $f(x)$ be a continuous and differentiable function, or more simply, a function with no jumps, skips, or gaps. An example of this function might be $f(x)=x^2 - 9.44x + 20.79$ or simply $f(x) = 10$. In studying practical applications of math, we are often concerned with finding the \emph{maxima} and \emph{minima}, otherwise known as \emph{extrema}, in a function's range.
+
+% Site source https://tutorial.math.lamar.edu/classes/calci/AbsExtrema.aspx
+The practical applications of extrema are unlimited. When throwing a ball in the air, it's good to know what time it is heighest in the air as well as what that height is. When slowing down a car, we can use extrema to determine exactly how long it will take to reach a stop.
 
 \begin{psec}{Constants}
 
@@ -29,7 +33,7 @@
 
     \begin{equation}\label{eq:derivative prod}
         \dx \left(f(x)*g(x)\right) = \dx[f] *  g(x) + f(x) *
-        \dx[g] 
+        \dx[g]
     \end{equation}
 
 \end{psec}
@@ -43,7 +47,7 @@
 \end{psec}
 
 \begin{psec}{Quotient Rule} The quotient rule is just an extension of the
-    power, product, and chain rules. We see this immediately since 
+    power, product, and chain rules. We see this immediately since
     \begin{equation*}
         \frac{f(x)}{g(x)} = f(x)g(x)^{-1}
     \end{equation*}
@@ -57,7 +61,7 @@
     \begin{equation*}
         \dx\ [(h\circ g)(x)] = \diff{h}{g} * \dx[g] = \left[\diff{}{g} g(x)^{-1}
         \right] * \dx[g]
-    \end{equation*}. Equation (\ref{eq:derivative power}) tells us 
+    \end{equation*}. Equation (\ref{eq:derivative power}) tells us
     \begin{equation*}
         \diff{}{g} g(x)^{-1} = -g(x)^{-2}
     \end{equation*}. Putting all this together and simplifying, we end up with
