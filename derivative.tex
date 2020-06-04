@@ -1,8 +1,14 @@
 \subsection{Finding extrema}
-Let $f(x)$ be a continuous and differentiable function, or more simply, a function with no jumps, skips, or gaps. An example of this function might be $f(x)=x^2 - 9.44x + 20.79$ or simply $f(x) = 10$. In studying practical applications of math, we are often concerned with finding the \emph{maxima} and \emph{minima}, otherwise known as \emph{extrema}, in a function's range.
 
-% Site source https://tutorial.math.lamar.edu/classes/calci/AbsExtrema.aspx
-The practical applications of extrema are unlimited. When throwing a ball in the air, it's good to know what time it is heighest in the air as well as what that height is. When slowing down a car, we can use extrema to determine exactly how long it will take to reach a stop.
+It is often desirable to have the \emph{maxima} and \emph{minima}, otherwise known as \emph{extrema}, in a function's range. For example, when throwing a ball in the air, it is good to know what time it is highest in the air and what that height is. With added complexity, we can use these extrema to optimize operations we are performing on a data set, or maximizing revenue in a storefront, etc.
+
+% TODO: Include a brief history of derivatives and calculus. Maybe the origin of the term derivative
+
+\emph{The derivative of a function is its rate of change over an infinitely small interval.} This interval is narrowed to a singularity so that it is almost considered a point. When describing the derivative of a function $f(x)$ with respect to a variable $x$, we notate this as
+\begin{equation*}
+    \dx f(x) \quad \text{or} \quad \dx[f] \quad \text{or} \quad f'(x)
+\end{equation*}, which put simply is the change in $f(x)$ over the change in $x$ and is, again, minimized so that the change in $x$ is infinitely small (nearly 0).
+
 
 \begin{psec}{Constants}
 
@@ -47,25 +53,7 @@ The practical applications of extrema are unlimited. When throwing a ball in the
 \end{psec}
 
 \begin{psec}{Quotient Rule} The quotient rule is just an extension of the
-    power, product, and chain rules. We see this immediately since
-    \begin{equation*}
-        \frac{f(x)}{g(x)} = f(x)g(x)^{-1}
-    \end{equation*}
-    . If we let $h(x) = x^{-1}$ so that $g(x)^{-1} = (h\circ g)(x)$, then we can expand out the product rule as
-    in Equation (\ref{eq:derivative prod})
-    \begin{equation*}
-        \dx \left(f(x) * (h\circ g)(x)\right) = \dx[f] *  (h\circ g)(x) + f(x) *
-        \dx\ [(h\circ g)(x)]
-    \end{equation*}. We then use Equation (\ref{eq:derivative chain}) to expand out the
-    derivative for the composite function $(h \circ g)(x)$
-    \begin{equation*}
-        \dx\ [(h\circ g)(x)] = \diff{h}{g} * \dx[g] = \left[\diff{}{g} g(x)^{-1}
-        \right] * \dx[g]
-    \end{equation*}. Equation (\ref{eq:derivative power}) tells us
-    \begin{equation*}
-        \diff{}{g} g(x)^{-1} = -g(x)^{-2}
-    \end{equation*}. Putting all this together and simplifying, we end up with
-    the formula
+    power, product, and chain rules.
     \begin{equation}
         \dx \left(\frac{f(x)}{g(x)}\right) = \frac{\dx[f] * g(x) - f(x) * \dx[g]
         }{g(x)^2}
