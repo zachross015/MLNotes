@@ -1,33 +1,70 @@
-\subsection{Finding extrema}
+\subsection{Derivatives}
 
-It is often desirable to have the \emph{maxima} and \emph{minima}, otherwise known as \emph{extrema}, in a function's range. For example, when throwing a ball in the air, it is good to know what time it is highest in the air and what that height is. With added complexity, we can use these extrema to optimize operations we are performing on a data set, or maximizing revenue in a storefront, etc.
+Let $f(x)$ be any continuous function. By finding the slope of the line between
+the point $f(x)$ and some point a little further $f(x+h)$, we come up with the
+\emph{rate of change} for the interval from $x$ to $x + h$ using the slope
+formula
+\begin{equation}\label{eq:roc}
+    \frac{f(x+h)-f(x)}{h}
+\end{equation}
+. We find the \emph{instantaneous rate of change of $f$ at $x$} by
+narrowing the offset $h$ in Equation \ref{eq:roc} to an infinitely small
+amount. By extrapolating this idea to the rest of the domain that $x$
+belongs to, we \emph{define the derivative of $f$ with respect to $x$ as the
+rate of change for all $x$ in the domain of $f$.}
+\begin{equation}\label{eq:derivative}
+    \dx[f] = \lim_{h\rightarrow 0} \frac{f(x + h) - f(x)}{h}
+\end{equation}.
 
-% TODO: Include a brief history of derivatives and calculus. Maybe the origin of the term derivative
-
-\emph{The derivative of a function is its rate of change over an infinitely small interval.} This interval is narrowed to a singularity so that it is almost considered a pointwise change. When describing the derivative of a function $f(x)$ with respect to a variable $x$, we notate this as
+We will use a couple of alternate notations for the derivative
+throughout the text
 \begin{equation*}
-    \dx f(x) \quad \text{or} \quad \dx[f] \quad \text{or} \quad f'(x)
-\end{equation*}, which put simply is the change in $f(x)$ over the change in $x$ and is, again, minimized so that the change in $x$ is infinitely small (nearly 0).
+    \dx f(x) \quad \text{or} \quad f'(x) \quad \text{or} \quad \dx[f]
+\end{equation*}.
 
 
-\begin{psec}{Constants}
+% TODO: Add more here
+% Include specifications on the variable with which the differentiation is in
+% respect of i.e. dx or dy or what not
 
+
+\begin{psec}{Constants}\label{rule:derivative constants} For any constant $c$,
+    we have
     \begin{equation}\label{eq:derivative constant}
         \dx c = 0
     \end{equation}
+    . This is an intuitive consequence since a constant by definition does not
+    change, and thus has no rate of change.
 
 \end{psec}
 
-\begin{psec}{Power rule}
-
+\begin{psec}{Power rule}\label{rule:derivative powers} For any constant $c$ and
+    variable $x$, we have
     \begin{equation}\label{eq:derivative power}
         \dx x^c = c x^{(c - 1)}
     \end{equation}
+    . To understand this consider the case when $c=3$ so that $f(x) = x^3$. We have 
+    \begin{align*}
+        \dx[f] &= \lim_{h\rightarrow 0} \frac{(x + h)^3 - x^3}{h} & &
+        \text{\footnotesize by definition (\ref{eq:derivative})}\\
+               &= \lim_{h\rightarrow 0} \frac{x^3 +3x^2h + 3xh^2 + h^3 -
+               x^3}{h} & & \text{\footnotesize expanding $(x + h)^3$}\\
+               &= \lim_{h\rightarrow 0} 3x^2 + 3xh + h^2 & &
+               \text{\footnotesize cancellation}\\
+               &= \lim_{h\rightarrow 0} 3x^2 & & \text{\footnotesize $h\rightarrow 0$} \\
+               &= 3x^2 & \text{}
+    \end{align*}.
+    
+    Another case is when $c = \frac{1}{2}$ so that $f(x) = (x)^{\frac{1}{2}}$ or
+    $\sqrt{x}$. By this rule, we end up with 
+    \begin{equation*}
+        \dx[f] = \recip{2} * (x)^{-\recip{2}} = \recip{2\sqrt{x}}
+    \end{equation*}
 
 \end{psec}
 
 % TODO: Cover polynomials in here
-\begin{psec}{Addition and subtraction}
+\begin{psec}{Addition and subtraction}\label{rule:derivative add}
 
     \begin{equation}\label{eq:derivative add}
         \dx (f(x) + g(x)) = \dx[f] + \dx[g]
@@ -35,7 +72,7 @@ It is often desirable to have the \emph{maxima} and \emph{minima}, otherwise kno
 
 \end{psec}
 
-\begin{psec}{Product rule}
+\begin{psec}{Product rule}\label{rule:derivative product}
 
     \begin{equation}\label{eq:derivative prod}
         \dx \left(f(x)*g(x)\right) = \dx[f] *  g(x) + f(x) *
@@ -44,7 +81,7 @@ It is often desirable to have the \emph{maxima} and \emph{minima}, otherwise kno
 
 \end{psec}
 
-\begin{psec}{Chain rule}
+\begin{psec}{Chain rule}\label{rule:derivative chain}
 
     \begin{equation}\label{eq:derivative chain}
         \dx (f \circ g)(x) = \diff{f}{g} * \diff{g}{x}
@@ -52,7 +89,7 @@ It is often desirable to have the \emph{maxima} and \emph{minima}, otherwise kno
 
 \end{psec}
 
-\begin{psec}{Quotient Rule} The quotient rule is just an extension of the
+\begin{psec}{Quotient Rule}\label{rule:derivative quotient} The quotient rule is just an extension of the
     power, product, and chain rules.
     \begin{equation}
         \dx \left(\frac{f(x)}{g(x)}\right) = \frac{\dx[f] * g(x) - f(x) * \dx[g]
@@ -61,7 +98,7 @@ It is often desirable to have the \emph{maxima} and \emph{minima}, otherwise kno
 
 \end{psec}
 
-\begin{psec}{Exponent rule}
+\begin{psec}{Exponent rule}\label{rule:derivative exponent}
 
     \begin{equation}
         \dx c ^ {f(x)} = c ^ {f(x)} * \dx[f]
@@ -69,7 +106,7 @@ It is often desirable to have the \emph{maxima} and \emph{minima}, otherwise kno
 
 \end{psec}
 
-\begin{psec}{Logarithm rule}
+\begin{psec}{Logarithm rule}\label{rule:derivative log}
 
     \begin{equation}
         \dx \log_c f(x) = \frac{1}{\ln c} * \frac{1}{f(x)} * \dx[f]
