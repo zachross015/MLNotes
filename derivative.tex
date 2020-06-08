@@ -2,16 +2,16 @@
 
 Let $f(x)$ be any continuous function. By finding the slope of the line between
 the point $f(x)$ and some point a little further $f(x+h)$, we come up with the
-\emph{rate of change} for the interval from $x$ to $x + h$ using the slope
+\emph{rate of change} for the interval from $x$ to $x + h$, or simply the interval of $h$, using the slope
 formula
 \begin{equation}\label{eq:roc}
     \frac{f(x+h)-f(x)}{h}
 \end{equation}
 . We find the \emph{instantaneous rate of change of $f$ at $x$} by
 narrowing the offset $h$ in Equation \ref{eq:roc} to an infinitely small
-amount. By extrapolating this idea to the rest of the domain that $x$
+amount which is nearly 0. Extrapolating this idea to the rest of the domain that $x$
 belongs to, we \emph{define the derivative of $f$ with respect to $x$ as the
-rate of change for all $x$ in the domain of $f$.}
+instantaneous rate of change for all $x$ in the domain of $f$.}
 \begin{equation}\label{eq:derivative}
     \dx[f] = \lim_{h\rightarrow 0} \frac{f(x + h) - f(x)}{h}
 \end{equation}.
@@ -27,39 +27,39 @@ throughout the text
 % Include specifications on the variable with which the differentiation is in
 % respect of i.e. dx or dy or what not
 
+We will now define the nine rules by which most differentiation can be performed. Let $c_1$ and $c_2$ be constants, let $x$ and $y$ be variables, and let $f(x)$ and $g(x)$ both be continuous and real valued functions.
 
-\begin{psec}{Constants}\label{rule:derivative constants} For any constant $c$,
+\begin{psec}{Constants}\label{rule:derivative constants} For constants,
     we have
     \begin{equation}\label{eq:derivative constant}
-        \dx c = 0
+        \dx c_1 = 0
     \end{equation}
     . This is an intuitive consequence since a constant by definition does not
     change, and thus has no rate of change.
+
+    If we differentiate a variable that does not change with respect to changes in our differentiating variable, then its derivative is treated as a constant. The same applies to a function. So the variable $y$ or $h(y)$ would, with respect to $x$, both have the derivatives
+    \begin{equation*}
+        \dx y = 0, \quad \quad \dx h(y) = 0
+    \end{equation*} if and only if the variable $y$ is independent of $x$. This is once again an intuitive consequence since the variables will remain the same when $x$ is changed.
 
 \end{psec}
 
 \begin{psec}{Power rule}\label{rule:derivative powers} For any constant $c$ and
     variable $x$, we have
     \begin{equation}\label{eq:derivative power}
-        \dx x^c = c x^{(c - 1)}
+        \dx x^{c_1} = c_1 x^{(c_1 - 1)}
     \end{equation}
-    . To understand this consider the case when $c=3$ so that $f(x) = x^3$. We have 
+    . To understand this consider the case when $c_1=3$ so that $f(x) = x^3$. We have
     \begin{align*}
         \dx[f] &= \lim_{h\rightarrow 0} \frac{(x + h)^3 - x^3}{h} & &
         \text{\footnotesize by definition (\ref{eq:derivative})}\\
                &= \lim_{h\rightarrow 0} \frac{x^3 +3x^2h + 3xh^2 + h^3 -
-               x^3}{h} & & \text{\footnotesize expanding $(x + h)^3$}\\
+               x^3}{h} & & \text{\footnotesize by expanding $(x + h)^3$}\\
                &= \lim_{h\rightarrow 0} 3x^2 + 3xh + h^2 & &
-               \text{\footnotesize cancellation}\\
-               &= \lim_{h\rightarrow 0} 3x^2 & & \text{\footnotesize $h\rightarrow 0$} \\
+               \text{\footnotesize by cancellation}\\
+               &= \lim_{h\rightarrow 0} 3x^2 & & \text{\footnotesize since $h\rightarrow 0$} \\
                &= 3x^2 & \text{}
     \end{align*}.
-    
-    Another case is when $c = \frac{1}{2}$ so that $f(x) = (x)^{\frac{1}{2}}$ or
-    $\sqrt{x}$. By this rule, we end up with 
-    \begin{equation*}
-        \dx[f] = \recip{2} * (x)^{-\recip{2}} = \recip{2\sqrt{x}}
-    \end{equation*}
 
 \end{psec}
 
@@ -101,7 +101,7 @@ throughout the text
 \begin{psec}{Exponent rule}\label{rule:derivative exponent}
 
     \begin{equation}
-        \dx c ^ {f(x)} = c ^ {f(x)} * \dx[f]
+        \dx \ln(f(x)) * c ^ {f(x)} = c ^ {f(x)} * \dx[f]
     \end{equation}
 
 \end{psec}
