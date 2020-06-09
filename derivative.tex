@@ -1,26 +1,29 @@
 \subsection{Derivatives}
 
-Let $f(x)$ be any continuous function. By finding the slope of the line between
-the point $f(x)$ and some point a little further $f(x+h)$, we come up with the
-\emph{rate of change} for the interval from $x$ to $x + h$, or simply the interval of $h$, using the slope
-formula
+Let $f(x)$ be any continuous function. The \emph{rate of change in $f$ from $x$ to $x+h$} is the slope of the line between
+the points $(x, f(x))$ and $(x + h, f(x+h))$, which can be written as
 \begin{equation}\label{eq:roc}
-    \frac{f(x+h)-f(x)}{h}
+    \frac{f(x+h)-f(x)}{h} \quad .
 \end{equation}
-. We find the \emph{instantaneous rate of change of $f$ at $x$} by
-narrowing the offset $h$ in Equation \ref{eq:roc} to an infinitely small
-amount which is nearly 0. Extrapolating this idea to the rest of the domain that $x$
-belongs to, we \emph{define the derivative of $f$ with respect to $x$ as the
-instantaneous rate of change for all $x$ in the domain of $f$.}
+We then find the \emph{instantaneous rate of change of $f$ at the point $a$} by
+narrowing the offset $h$ in Equation (\ref{eq:roc}) to an infinitely small
+amount, nearly 0, at $(a, f(a))$.
+\begin{equation}\label{eq:iroc}
+    \dx[f] (a) = \lim_{h\rightarrow 0} \frac{f(a + h) - f(a)}{h} \quad .
+\end{equation}
+This is otherwise known as the slope of the line that runs tangent to $f(a)$.
+
+By extrapolating Equation (\ref{eq:iroc}) to the rest of $f$'s domain, we define \emph{the derivative of $f$ with respect to $x$ as the
+instantaneous rate of change for all $x$ in the domain of $f$}
 \begin{equation}\label{eq:derivative}
-    \dx[f] = \lim_{h\rightarrow 0} \frac{f(x + h) - f(x)}{h}
-\end{equation}.
+    \dx[f] (x) = \lim_{h\rightarrow 0} \frac{f(x + h) - f(x)}{h} \quad .
+\end{equation}
 
 We will use a couple of alternate notations for the derivative
 throughout the text
 \begin{equation*}
-    \dx f(x) \quad \text{or} \quad f'(x) \quad \text{or} \quad \dx[f]
-\end{equation*}.
+    \dx[f](x) \quad \text{or} \quad \dx f(x) \quad \text{or} \quad f'(x)
+\end{equation*}, all of which represent the derivative of a function $f$ with respect to its input, $x$.
 
 
 % TODO: Add more here
@@ -67,7 +70,7 @@ We will now define the nine rules by which most differentiation can be performed
 \begin{psec}{Addition and subtraction}\label{rule:derivative add}
 
     \begin{equation}\label{eq:derivative add}
-        \dx (f(x) + g(x)) = \dx[f] + \dx[g]
+        \dx (f(x) + g(x)) = \dx[f](x) + \dx[g](x)
     \end{equation}
 
 \end{psec}
@@ -75,8 +78,8 @@ We will now define the nine rules by which most differentiation can be performed
 \begin{psec}{Product rule}\label{rule:derivative product}
 
     \begin{equation}\label{eq:derivative prod}
-        \dx \left(f(x)*g(x)\right) = \dx[f] *  g(x) + f(x) *
-        \dx[g]
+        \dx \left(f(x)*g(x)\right) = \dx[f](x) *  g(x) + f(x) *
+        \dx[g](x)
     \end{equation}
 
 \end{psec}
@@ -84,7 +87,7 @@ We will now define the nine rules by which most differentiation can be performed
 \begin{psec}{Chain rule}\label{rule:derivative chain}
 
     \begin{equation}\label{eq:derivative chain}
-        \dx (f \circ g)(x) = \diff{f}{g} * \diff{g}{x}
+        \dx (f \circ g)(x) = \diff{f}{g} * \diff{g}{x}(x)
     \end{equation}
 
 \end{psec}
@@ -92,7 +95,7 @@ We will now define the nine rules by which most differentiation can be performed
 \begin{psec}{Quotient Rule}\label{rule:derivative quotient} The quotient rule is just an extension of the
     power, product, and chain rules.
     \begin{equation}
-        \dx \left(\frac{f(x)}{g(x)}\right) = \frac{\dx[f] * g(x) - f(x) * \dx[g]
+        \dx \left(\frac{f(x)}{g(x)}\right) = \frac{\dx[f](x) * g(x) - f(x) * \dx[g](x)
         }{g(x)^2}
     \end{equation}.
 
@@ -101,7 +104,7 @@ We will now define the nine rules by which most differentiation can be performed
 \begin{psec}{Exponent rule}\label{rule:derivative exponent}
 
     \begin{equation}
-        \dx \ln(f(x)) * c ^ {f(x)} = c ^ {f(x)} * \dx[f]
+        \dx \ln(f(x)) * c ^ {f(x)} = c ^ {f(x)} * \dx[f](x)
     \end{equation}
 
 \end{psec}
@@ -109,7 +112,7 @@ We will now define the nine rules by which most differentiation can be performed
 \begin{psec}{Logarithm rule}\label{rule:derivative log}
 
     \begin{equation}
-        \dx \log_c f(x) = \frac{1}{\ln c} * \frac{1}{f(x)} * \dx[f]
+        \dx \log_c f(x) = \frac{1}{\ln c} * \frac{1}{f(x)} * \dx[f] (x)
     \end{equation}
 
 \end{psec}
