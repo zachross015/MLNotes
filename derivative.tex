@@ -1,17 +1,25 @@
 \subsection{Derivatives}
 
-Let $f(x)$ be any continuous function. The \emph{rate of change in $f$ from $x$ to $x+h$} is the slope of the line between
-the points $(x, f(x))$ and $(x + h, f(x+h))$, which can be written as
+Let $f(x)$ be any continuous function and let $a, b$ be two points in the domain of $f$ with $a\leq b$. The \emph{rate of change in $f$ from $a$ to $b$ is the speed that $f$ changes over the interval $[a,b]$} and is measured by the slope of the line between
+the points $(a, f(a))$ and $(b, f(b))$
+\begin{equation}\label{eq:pre roc}
+    \frac{f(b)-f(a)}{b-a}.
+\end{equation}
+This is also the line running tangent to these points.
+As an example of this, let $f(x)=x^2$. Our rate of change for $a=0$ and $b=1$ would then be 1, and if we instead set $a=1$ and $b=2$, the rate of change comes out as 3. By minimizing the distance between $a$ and $b$, we get a better estimation for our rate of change, since narrowing this margin reduces any smoothing that occurs in bigger margins. For an idea of this, take $a=-2$ and $b=2$. Then our rate of change is $0$, which does not seem accurate since at $f(a)$ we are reducing the speed which we move down and so we would expect our rate of change to be negative. If we instead set $b=0$, we have a rate of change of -2, which seems more accurate considering the graph of $x^2$ bottoms out when $x=0$. As such, the negative value for $f(a)$'s rate of change tells us that the \emph{rate that $f(x)$ decreases between -2 and 0 is always decreasing}.
+
+Keeping this in mind, we instead want to examine the affect of closing the margin $b-a$, and so it is much more convenient to change the notation to reflect this. Let $x_1 = a$ and let $h = b - a$. Equation (\ref{eq:pre roc}) can then be simplified to
 \begin{equation}\label{eq:roc}
-    \frac{f(x+h)-f(x)}{h} \quad .
-\end{equation}
-We then find the \emph{instantaneous rate of change of $f$ at the point $a$} by
+    \frac{f(x_1+h)-f(x_1)}{h}.
+\end{equation}.
+
+We then get the \emph{instantaneous rate of change of $f$ at $x_1$} by
 narrowing the offset $h$ in Equation (\ref{eq:roc}) to an infinitely small
-amount, nearly 0, at $(a, f(a))$.
+amount, nearly 0, at $(x_1, f(x_1))$.
 \begin{equation}\label{eq:iroc}
-    \dx[f] (a) = \lim_{h\rightarrow 0} \frac{f(a + h) - f(a)}{h} \quad .
+    \dx[f] (x_1) = \lim_{h\rightarrow 0} \frac{f(x_1 + h) - f(x_1)}{h} \quad .
 \end{equation}
-This is otherwise known as the slope of the line that runs tangent to $f(a)$.
+This is otherwise known as the slope of the line that runs tangent to the \emph{point} $(x_1,f(x_1))$. The instantaneous rate of change can be thought of as finding the direction that $f$ is moving in at the exact point $x_1$.
 
 By extrapolating Equation (\ref{eq:iroc}) to the rest of $f$'s domain, we define \emph{the derivative of $f$ with respect to $x$ as the
 instantaneous rate of change for all $x$ in the domain of $f$}
@@ -115,7 +123,7 @@ We will now define the nine rules by which most differentiation can be performed
         \dx \log_c f(x) = \frac{1}{\ln c} * \frac{1}{f(x)} * \dx[f] (x)
     \end{equation}
 
-    For the natural log, this is simplified to 
+    For the natural log, this is simplified to
     \begin{equation*}
         \dx \ln f(x) = \frac{1}{f(x)} * \dx[f].
     \end{equation*}
