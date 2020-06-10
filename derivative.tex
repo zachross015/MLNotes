@@ -6,7 +6,7 @@ the points $(a, f(a))$ and $(b, f(b))$
     \frac{f(b)-f(a)}{b-a}.
 \end{equation}
 This is also the line running tangent to these points.
-As an example of this, let $f(x)=x^2$. Our rate of change for $a=0$ and $b=1$ would then be 1, and if we instead set $a=1$ and $b=2$, the rate of change comes out as 3. By minimizing the distance between $a$ and $b$, we get a better estimation for our rate of change, since narrowing this margin reduces any smoothing that occurs in bigger margins. For an idea of this, take $a=-2$ and $b=2$. Then our rate of change is $0$, which does not seem accurate since at $f(a)$ we are reducing the speed which we move down and so we would expect our rate of change to be negative. If we instead set $b=0$, we have a rate of change of -2, which seems more accurate considering the graph of $x^2$ bottoms out when $x=0$. As such, the negative value for $f(a)$'s rate of change tells us that the \emph{rate that $f(x)$ decreases between -2 and 0 is always decreasing}.
+As an example of this, let $f(x)=x^2$. Our rate of change for $a=0$ and $b=1$ would then be 1, and if we instead set $a=1$ and $b=2$, the rate of change comes out as 3. This makes sense since at $a=1$, $f$ is rising faster than at $a=0$. By minimizing the distance between $a$ and $b$, we get a better estimation for our rate of change, since narrowing this margin reduces any smoothing that occurs in bigger margins. For an idea of this, take $a=-2$ and $b=2$. Then our rate of change is $0$, which does not seem accurate since at $f(a)$ we are reducing the speed which we move down and so we would expect our rate of change to be negative. If we instead set $b=0$, we have a rate of change of -2, which seems more accurate considering the graph of $x^2$ bottoms out when $x=0$. As such, the negative value for $f(a)$'s rate of change tells us that the rate that $f(x)$ decreases between -2 and 0 is decreasing i.e., the change in $f$ is slowing down.
 
 Keeping this in mind, we instead want to examine the affect of closing the margin $b-a$, and so it is much more convenient to change the notation to reflect this. Let $x_1 = a$ and let $h = b - a$. Equation (\ref{eq:pre roc}) can then be simplified to
 \begin{equation}\label{eq:roc}
@@ -24,7 +24,7 @@ This is otherwise known as the slope of the line that runs tangent to the \emph{
 By extrapolating Equation (\ref{eq:iroc}) to the rest of $f$'s domain, we define \emph{the derivative of $f$ with respect to $x$ as the
 instantaneous rate of change for all $x$ in the domain of $f$}
 \begin{equation}\label{eq:derivative}
-    \dx[f] (x) = \lim_{h\rightarrow 0} \frac{f(x + h) - f(x)}{h} \quad .
+    \dx[f] (x) = \lim_{h\rightarrow 0} \frac{f(x + h) - f(x)}{h} .
 \end{equation}
 
 We will use a couple of alternate notations for the derivative
@@ -38,47 +38,44 @@ throughout the text
 % Include specifications on the variable with which the differentiation is in
 % respect of i.e. dx or dy or what not
 
-We will now define the nine rules by which most differentiation can be performed. Let $c_1$ and $c_2$ be constants, let $x$ and $y$ be variables, and let $f(x)$ and $g(x)$ both be continuous and real valued functions.
+We will now define the nine rules by which most differentiation can be performed. Let $c$ be a constant, let $x$ and $y$ be variables, and let $f(x)$ and $g(x)$ both be continuous and real valued functions.
 
 \begin{psec}{Constants}\label{rule:derivative constants} For constants,
     we have
     \begin{equation}\label{eq:derivative constant}
-        \dx c_1 = 0
+        \dx c = 0
     \end{equation}
     . This is an intuitive consequence since a constant by definition does not
     change, and thus has no rate of change.
 
-    If we differentiate a variable that does not change with respect to changes in our differentiating variable, then its derivative is treated as a constant. The same applies to a function. So the variable $y$ or $h(y)$ would, with respect to $x$, both have the derivatives
+    If we differentiate a variable that does not change with respect to changes in our differentiating variable, then its derivative is treated as a constant. The same applies to a function. So when the variable $y$ or the function $h(y)$ are unaffected by or otherwise independent of changes in $x$, both have the derivatives
     \begin{equation*}
-        \dx y = 0, \quad \quad \dx h(y) = 0
-    \end{equation*} if and only if the variable $y$ is independent of $x$. This is once again an intuitive consequence since the variables will remain the same when $x$ is changed.
+        \dx y = 0, \quad \quad \dx h(y) = 0.
+    \end{equation*}
 
 \end{psec}
 
-\begin{psec}{Power rule}\label{rule:derivative powers} For any constant $c$ and
-    variable $x$, we have
+\begin{psec}{Power rule}\label{rule:derivative powers} The rate of change for a variable with a constant power is defined in terms of the precedent power
     \begin{equation}\label{eq:derivative power}
-        \dx x^{c_1} = c_1 x^{(c_1 - 1)}
+        \dx x^{c} = c x^{(c - 1)}.
     \end{equation}
-    . To understand this consider the case when $c_1=3$ so that $f(x) = x^3$. We have
+    To understand this, consider two cases
     \begin{align*}
-        \dx[f] &= \lim_{h\rightarrow 0} \frac{(x + h)^3 - x^3}{h} & &
-        \text{\footnotesize by definition (\ref{eq:derivative})}\\
-               &= \lim_{h\rightarrow 0} \frac{x^3 +3x^2h + 3xh^2 + h^3 -
-               x^3}{h} & & \text{\footnotesize by expanding $(x + h)^3$}\\
-               &= \lim_{h\rightarrow 0} 3x^2 + 3xh + h^2 & &
-               \text{\footnotesize by cancellation}\\
-               &= \lim_{h\rightarrow 0} 3x^2 & & \text{\footnotesize since $h\rightarrow 0$} \\
-               &= 3x^2 & \text{}
-    \end{align*}.
+        f(x) &= x &\quad \dx[f](x) &= 1,\\
+        g(x) &= x^2 &\quad \dx[g](x) &= 2x.
+    \end{align*}
+    For the case of $f(x)$, the derivative tells us that the function monotonically increases at a constant rate. For $g(x)$, we find that the rate of change is still dependent on $x$, so its rate of change is no longer constant and changes based on its point in the domain. For $x<0$ we see that $\dx[g]$ is negative and so the rate of change in $g$ is decreasing. Likewise, when $x>0$, $g(x)$'s pace is increasing.
 
 \end{psec}
 
 % TODO: Cover polynomials in here
-\begin{psec}{Addition and subtraction}\label{rule:derivative add}
-
+\begin{psec}{Addition and subtraction}\label{rule:derivative add} The derivative of a sum is the sum of its derivatives
     \begin{equation}\label{eq:derivative add}
-        \dx (f(x) + g(x)) = \dx[f](x) + \dx[g](x)
+        \dx (f(x) + g(x)) = \dx[f](x) + \dx[g](x).
+    \end{equation}
+    We can extend this rule to include the summation of more than two numbers as well. For the summation of $n$ functions indexed by $f_i(x)$ for $1\leq i\leq n$, the derivative is given by
+    \begin{equation}\label{eq:derivative n add}
+        \dx\left(\sum_{i=1}^{n} f_i(x)\right) = \sum_{i=1}^{n} \dx[f_i](x)
     \end{equation}
 
 \end{psec}
